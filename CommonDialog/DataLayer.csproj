@@ -38,6 +38,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RefactorThis.GraphDiff, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RefactorThis.GraphDiff.2.0.1\lib\RefactorThis.GraphDiff.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -49,12 +53,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\AccountRepository.cs" />
+    <Compile Include="DataAccess\ContactRepository.cs" />
+    <Compile Include="DataAccess\GeneralContactRepository.cs" />
+    <Compile Include="DataAccess\IRepository.cs" />
+    <Compile Include="DataAccess\MessageRepository.cs" />
+    <Compile Include="DataAccess\UnitOfWork.cs" />
     <Compile Include="Model\Account.cs" />
+    <Compile Include="DataAccess\CommonDialogContext.cs" />
     <Compile Include="Model\Contact.cs" />
-    <Compile Include="Model\Dialog.cs" />
+    <Compile Include="Model\GeneralContact.cs" />
     <Compile Include="Model\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
