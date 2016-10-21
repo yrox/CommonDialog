@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DataLayer.Model
+namespace BaseEntyties
 {
     public class GeneralContact
     {

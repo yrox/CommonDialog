@@ -1,7 +1,7 @@
 ﻿using System;
-using CommonDialog.DataAccess;
+using  DataLayer.Repositories;
 
-namespace DataLayer.DataAccess
+namespace DataLayer
 {
     public class UnitOfWork : IDisposable
     {

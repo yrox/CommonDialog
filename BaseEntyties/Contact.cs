@@ -1,4 +1,4 @@
-﻿namespace DataLayer.Model
+﻿namespace BaseEntyties
 {
     public class Contact
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataLayer.DataAccess;
-using DataLayer.Model;
+using BaseEntyties;
 using System.Data.Entity;
+using DataLayer.Interfaces;
 using RefactorThis.GraphDiff;
 
-namespace CommonDialog.DataAccess
+namespace DataLayer.Repositories
 {
     public class MessageRepository : IRepository<Message>
     {
@@ -24,7 +24,7 @@ namespace CommonDialog.DataAccess
         {
             return db.Messages.Find(id);
         }
-        public IEnumerable<Message> Find(Func<Message, Boolean> predicate)
+        public IEnumerable<Message> Find(Func<Message, bool> predicate)
         {
             return db.Messages.Where(predicate).ToList();
         }

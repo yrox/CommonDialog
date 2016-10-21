@@ -1,16 +1,14 @@
-﻿using DataLayer.DataAccess;
+﻿using DataLayer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataLayer.Model;
+using BaseEntyties;
 using RefactorThis.GraphDiff;
 
-namespace CommonDialog.DataAccess
+namespace DataLayer.Repositories
 {
-    public class ContactRepository
+    public class ContactRepository : IRepository<Contact>
     {
         public ContactRepository(CommonDialogContext context)
         {
@@ -26,7 +24,7 @@ namespace CommonDialog.DataAccess
         {
             return db.Contacts.Find(id);
         }
-        public IEnumerable<Contact> Find(Func<Contact, Boolean> predicate)
+        public IEnumerable<Contact> Find(Func<Contact, bool> predicate)
         {
             return db.Contacts.Where(predicate).ToList();
         }

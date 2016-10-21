@@ -1,8 +1,8 @@
 ﻿using System.Data.Entity;
-using DataLayer.Model;
+using BaseEntyties;
 //using DataLayer.Migrations;
 
-namespace DataLayer.DataAccess
+namespace DataLayer
 {
     public class CommonDialogContext : DbContext
     {

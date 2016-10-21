@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataLayer.Model;
+using BaseEntyties;
 using System.Data.Entity;
+using DataLayer.Interfaces;
 
-namespace DataLayer.DataAccess
+namespace DataLayer.Repositories
 {
     public class AccountRepository : IRepository<Account>
     {

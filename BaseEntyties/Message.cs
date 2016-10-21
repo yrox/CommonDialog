@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataLayer.Model
+namespace BaseEntyties
 {
     public class Message
     {

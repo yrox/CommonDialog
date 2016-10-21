@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataLayer.Model;
+using BaseEntyties;
 using RefactorThis.GraphDiff;
 using System.Data.Entity;
+using DataLayer.Interfaces;
 
-namespace DataLayer.DataAccess
+namespace DataLayer.Repositories
 {
     public class GeneralContactRepository : IRepository<GeneralContact>
     {
@@ -32,9 +33,7 @@ namespace DataLayer.DataAccess
         public void Add(GeneralContact item)
         {
             db.GeneralContacts.Add(item);
-            //db.GeneralContacts.Attach(item);
-            //db.Entry(item).State = EntityState.Added;
-            // Update(item);
+            
         }
 
         public void Update(GeneralContact item)

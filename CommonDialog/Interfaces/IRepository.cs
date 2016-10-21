@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataLayer.DataAccess
+namespace DataLayer.Interfaces
 {
     public interface IRepository<T> where T : class
     {
