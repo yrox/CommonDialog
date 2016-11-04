@@ -3,13 +3,8 @@ using BaseEntyties;
 
 namespace BusinessLogic.Interfaces
 {
-    public interface IAccount
+    public interface IAccount : IMessaging, IContactsInteracting
     {
-        IEnumerable<Contact> GetAllContacts();
-        Contact GetContact(long id);
-        Contact GetContact(string nameOrPhoneNumber);
-
-        void SendMessage(string text, Contact contact);
- 
+        string AccountType { get; }
     }
 }

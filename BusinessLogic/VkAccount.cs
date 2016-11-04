@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoMapper;
 using System.Linq;
 using BaseEntyties;
 using BusinessLogic.Interfaces;
 using VkNet;
+using VkNet.Enums.Filters;
 using VkNet.Model.RequestParams;
+using static BusinessLogic.EntytiesMapper;
 
 namespace BusinessLogic
 {
     public class VkAccount : IAccount
     {
-        public VkAccount(string login, string password)
+        public VkAccount(Account acc)
         {
+            AccountType = acc.Type;
             api = new VkApi();
-            Authorize(login, password);
-            InitializeMapper();
+            Authorize(acc.Login, acc.Password);
         }
 
-        private void InitializeMapper()
-        {
-            Mapper.Initialize(cfg => cfg.CreateMap<VkNet.Model.User, Contact>()
-            .ForMember("ContactIdentifier", x => x.MapFrom(c => c.Id))
-            .ForMember("Name", x => x.MapFrom(c => c.FirstName + " " + c.LastName)));
-        }
+        public string AccountType { get; }
 
         private VkApi api;
 
@@ -38,9 +34,10 @@ namespace BusinessLogic
         {
             api.Authorize(new ApiAuthParams
             {
-                ApplicationId = 0,
-                Login = login,
-                Password = password,
+                ApplicationId = 5678626,
+                Login = "+375298857813",
+                Password = "MWAHAHA17954gotteenn90years",
+                Settings = Settings.All,
                 TwoFactorAuthorization = code
             });
         }
@@ -53,13 +50,14 @@ namespace BusinessLogic
         {
             var c = api.Friends.Search(new FriendsSearchParams
             {
+                UserId = (long)api.UserId,
                 Query = name
             });
-            return Mapper.Map<Contact>(c);
+            return EntytiesMapper.Map(c.First());
         }
         public Contact GetContact(long id)
         {
-            return Mapper.Map<Contact>(api.Users.Get(id));
+            return Map(api.Users.Get(id));
         }
 
         public void SendMessage(string text, Contact contact)
@@ -70,7 +68,16 @@ namespace BusinessLogic
                 Message = text
             });
         }
-
+        public IEnumerable<Message> GetMessagesByContact(Contact contact)
+        {
+           var s = api.Messages.GetHistory(
+                new MessagesGetHistoryParams
+                {
+                    UserId = GetContact(contact.Name).ContactIdentifier,
+                    StartMessageId = -1
+                });
+            return Map(s.Messages);
+        } 
 
     }
 }

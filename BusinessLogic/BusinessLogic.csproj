@@ -56,7 +56,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SomeClassWithSuitableName.cs" />
+    <Compile Include="EntytiesMapper.cs" />
     <Compile Include="Interfaces\IAccount.cs" />
+    <Compile Include="Interfaces\IContactsInteracting.cs" />
+    <Compile Include="Interfaces\IMessaging.cs" />
+    <Compile Include="Messaging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VkAccount.cs" />
   </ItemGroup>
@@ -64,6 +69,10 @@
     <ProjectReference Include="..\BaseEntyties\BaseEntyties.csproj">
       <Project>{0bce6ab8-9ece-4ae7-a58d-0136200747aa}</Project>
       <Name>BaseEntyties</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonDialog\DataLayer.csproj">
+      <Project>{0f8401d9-45bb-48b2-83a6-70eb2be7fb5e}</Project>
+      <Name>DataLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

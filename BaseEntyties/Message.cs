@@ -8,6 +8,7 @@ namespace BaseEntyties
         public string Text { get; set; }
         public DateTime DateTime { get; set; }
         public string Type { get; set; }
+        public int ContactIdentifier { get; set; }
 
         public virtual GeneralContact GeneralContact { get; set; }
 
