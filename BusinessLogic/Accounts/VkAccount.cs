@@ -6,9 +6,8 @@ using BusinessLogic.Interfaces;
 using VkNet;
 using VkNet.Enums.Filters;
 using VkNet.Model.RequestParams;
-using static BusinessLogic.EntytiesMapper;
 
-namespace BusinessLogic
+namespace BusinessLogic.Accounts
 {
     public class VkAccount : IAccount
     {
@@ -57,7 +56,7 @@ namespace BusinessLogic
         }
         public Contact GetContact(long id)
         {
-            return Map(api.Users.Get(id));
+            return EntytiesMapper.Map(api.Users.Get(id));
         }
 
         public void SendMessage(string text, Contact contact)
@@ -76,7 +75,7 @@ namespace BusinessLogic
                     UserId = GetContact(contact.Name).ContactIdentifier,
                     StartMessageId = -1
                 });
-            return Map(s.Messages);
+            return EntytiesMapper.Map(s.Messages);
         } 
 
     }

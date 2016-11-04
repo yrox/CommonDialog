@@ -3,7 +3,7 @@ using BaseEntyties;
 
 namespace BusinessLogic.Interfaces
 {
-    public interface IContactsInteracting
+    public interface IContactsOperating
     {
         IEnumerable<Contact> GetAllContacts();
         Contact GetContact(long id);
