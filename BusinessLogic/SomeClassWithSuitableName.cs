@@ -1,67 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BaseEntyties;
+using BusinessLogic.Data;
 using BusinessLogic.Interfaces;
+using BusinessLogic.Logic;
 using DataLayer;
 
 namespace BusinessLogic
 {
     public class SomeClassWithSuitableName
     {
-        public SomeClassWithSuitableName(IEnumerable<IAccount> accs)
+        public SomeClassWithSuitableName(IEnumerable<IAccount> accs, DataHandler dataHandler)
         {
-            this.accs = accs;
-            data = new UnitOfWork();
-            messaging = new Messaging(data);
-            contactsOperating = new ContactsOperating(data);
+            _accs = accs;
+            _dataHandler = dataHandler;
+        }
+
+        private IEnumerable<IAccount> _accs;
+        private Messaging _messaging;
+        private Contacts _contacts;
+        private DataHandler _dataHandler;
+
+        public void SendMesage(Message message)
+        {
+            var accToSend = _accs.Single(a => a.AccountType == message.Type);
+            _messaging.SendMessage(message, accToSend);
         }
         
-        private UnitOfWork data;
-
-        private IEnumerable<IAccount> accs;
-        private Messaging messaging;
-        private ContactsOperating contactsOperating;
-
-        public void SendMesage(GeneralContact genContact, string message)
-        {
-            var lastMessageType = genContact.Messages.Last().Type;
-            SendMssageTo(genContact, message, lastMessageType);
-        }
-        public void SendMssageTo(GeneralContact genContact, string message, string type)
-        {
-            var accToSend = accs.Single(a => a.AccountType == type);
-            var conToSend = genContact.Contacts.Single(c => c.Type == type);
-            messaging.SendMessage(conToSend, accToSend, message);
-        }
-        public IEnumerable<Message> GetMessageHistory(GeneralContact genContact)
-        {
-            return genContact.Messages;
-        }
-        public IEnumerable<Message> GetMessageHistoryOfType(GeneralContact genContact, string type)
-        {
-            return genContact.Messages.Where(m => m.Type == type);
-        }
         public IEnumerable<Message> LoadMessageHistoryOfContact(Contact contact)
         {
-            return accs.Single(a => a.AccountType == contact.Type).GetMessagesByContact(contact);
+            return _accs.Single(a => a.AccountType == contact.Type).GetMessagesByContact(contact);
+        }
+        public IEnumerable<Message> LoadMessageHistoryOfGenContact(GeneralContact genContact)
+        {
+            var messages = new List<Message>();
+            foreach (var c in genContact.Contacts)
+            {
+                messages.AddRange(LoadMessageHistoryOfContact(c));
+            }
+            return messages.OrderBy(m => m.DateTime); 
         }
 
-        public IEnumerable<Contact> GetAllContacts(GeneralContact genContact)
+
+        public IEnumerable<Contact> LosdAllContactsOfType(string type)
         {
-            return genContact.Contacts;
+            return _accs.Single(a => a.AccountType == type).GetAllContacts();
         }
-        public IEnumerable<Contact> GetAllContactsOfType(string type)
+        public IEnumerable<Contact> LosdAllContacts()
         {
-            return accs.Single(a => a.AccountType == type).GetAllContacts();
-        } 
+            var cont = new List<Contact>();
+            foreach (var acc in _accs)
+            {
+                cont.AddRange(LosdAllContactsOfType(acc.AccountType));
+            }
+            return cont;
+        }
         public Contact GetContact(string type, int id)
         {
-            return contactsOperating.GetContact(accs.Single(c => c.AccountType == type), id);
+            return _contacts.GetContact(_accs.Single(c => c.AccountType == type), id);
         }
         public Contact GetContact(string type, string nameOrPhoneNumber)
         {
-            return contactsOperating.GetContact(accs.Single(c => c.AccountType == type), nameOrPhoneNumber);
+            return _contacts.GetContact(_accs.Single(c => c.AccountType == type), nameOrPhoneNumber);
         }
     }
 }

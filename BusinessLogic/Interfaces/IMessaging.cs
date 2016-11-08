@@ -5,7 +5,7 @@ namespace BusinessLogic.Interfaces
 {
     public interface IMessaging
     {
-        void SendMessage(string text, Contact contact);
+        void SendMessage(Message message);
         IEnumerable<Message> GetMessagesByContact(Contact contact);
     }
 }

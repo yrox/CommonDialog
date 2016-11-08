@@ -11,37 +11,37 @@ namespace DataLayer.Repositories
     {
         public AccountRepository(CommonDialogContext context)
         {
-            db = context;
+            _db = context;
         }
 
-        private CommonDialogContext db;
+        private CommonDialogContext _db;
         public IEnumerable<Account> GetAll()
         {
-            return db.Accounts;
+            return _db.Accounts;
         }
         public Account Get(int id)
         {
-            return db.Accounts.Find(id);
+            return _db.Accounts.Find(id);
         }
         public IEnumerable<Account> Find(Func<Account, Boolean> predicate)
         {
-            return db.Accounts.Where(predicate).ToList();
+            return _db.Accounts.Where(predicate).ToList();
         }
 
         public void Add(Account item)
         {
-            db.Accounts.Attach(item);
-            db.Entry(item).State = EntityState.Added;
+            _db.Accounts.Attach(item);
+            _db.Entry(item).State = EntityState.Added;
         }
 
         public void Update(Account item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            _db.Entry(item).State = EntityState.Modified;
         }
 
         public void Delete(Account item)
         {
-            db.Entry(item).State = EntityState.Deleted;
+            _db.Entry(item).State = EntityState.Deleted;
         }
 
     }

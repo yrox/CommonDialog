@@ -3,7 +3,7 @@ using BaseEntyties;
 
 namespace BusinessLogic.Interfaces
 {
-    public interface IAccount : IMessaging, IContactsOperating
+    public interface IAccount : IMessaging, IContacts
     {
         string AccountType { get; }
     }

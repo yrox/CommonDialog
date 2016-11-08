@@ -12,38 +12,38 @@ namespace DataLayer.Repositories
     {
         public ContactRepository(CommonDialogContext context)
         {
-            db = context;
+            _db = context;
         }
 
-        private CommonDialogContext db;
+        private CommonDialogContext _db;
         public IEnumerable<Contact> GetAll()
         {
-            return db.Contacts;
+            return _db.Contacts;
         }
         public Contact Get(int id)
         {
-            return db.Contacts.Find(id);
+            return _db.Contacts.Find(id);
         }
         public IEnumerable<Contact> Find(Func<Contact, bool> predicate)
         {
-            return db.Contacts.Where(predicate).ToList();
+            return _db.Contacts.Where(predicate).ToList();
         }
 
         public void Add(Contact item)
         {
-            db.Contacts.Attach(item);
-            db.Entry(item).State = EntityState.Added;
+            _db.Contacts.Attach(item);
+            _db.Entry(item).State = EntityState.Added;
         }
 
         public void Update(Contact item)
         {
-            db.Entry(item).State = EntityState.Detached;
-            db.UpdateGraph(item, map => map.OwnedEntity(x => x.GeneralContact));
+            _db.Entry(item).State = EntityState.Detached;
+            _db.UpdateGraph(item, map => map.OwnedEntity(x => x.GeneralContact));
         }
 
         public void Delete(Contact item)
         {
-            db.Entry(item).State = EntityState.Deleted;
+            _db.Entry(item).State = EntityState.Deleted;
         }
     }
 }

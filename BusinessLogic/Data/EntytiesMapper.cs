@@ -2,9 +2,8 @@
 using System.Linq;
 using AutoMapper;
 using BaseEntyties;
-using BusinessLogic.Interfaces;
 
-namespace BusinessLogic
+namespace BusinessLogic.Data
 {
     public class EntytiesMapper
     {

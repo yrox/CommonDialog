@@ -5,72 +5,72 @@ namespace DataLayer
 {
     public class UnitOfWork : IDisposable
     {
-        private CommonDialogContext db = new CommonDialogContext();
-        private AccountRepository accountRepository;
-        private GeneralContactRepository generalContactRepository;
-        private MessageRepository messageRepository;
-        private ContactRepository contactRepository;
+        private CommonDialogContext _db = new CommonDialogContext();
+        private AccountRepository _accountRepository;
+        private GeneralContactRepository _generalContactRepository;
+        private MessageRepository _messageRepository;
+        private ContactRepository _contactRepository;
 
         public AccountRepository Accounts
         {
             get
             {
-                if (accountRepository == null)
+                if (_accountRepository == null)
                 {
-                    accountRepository = new AccountRepository(db);
+                    _accountRepository = new AccountRepository(_db);
                 }
-                return accountRepository;
+                return _accountRepository;
             }
         }
         public GeneralContactRepository GeneralContacts
         {
             get
             {
-                if (generalContactRepository == null)
+                if (_generalContactRepository == null)
                 {
-                    generalContactRepository = new GeneralContactRepository(db);
+                    _generalContactRepository = new GeneralContactRepository(_db);
                 }
-                return generalContactRepository;
+                return _generalContactRepository;
             }
         }
         public MessageRepository Messages
         {
             get
             {
-                if (messageRepository == null)
+                if (_messageRepository == null)
                 {
-                    messageRepository = new MessageRepository(db);
+                    _messageRepository = new MessageRepository(_db);
                 }
-                return messageRepository;
+                return _messageRepository;
             }
         }
         public ContactRepository Contacts
         {
             get
             {
-                if (contactRepository == null)
+                if (_contactRepository == null)
                 {
-                    contactRepository = new ContactRepository(db);
+                    _contactRepository = new ContactRepository(_db);
                 }
-                return contactRepository;
+                return _contactRepository;
             }
         }
 
         public void Save()
         {
-            db.SaveChanges();
+            _db.SaveChanges();
         }
 
-        private bool disposed = false;
+        private bool _disposed = false;
         public virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!this._disposed)
             {
                 if (disposing)
                 {
-                    db.Dispose();
+                    _db.Dispose();
                 }
-                this.disposed = true;
+                this._disposed = true;
             }
         }
         public void Dispose()

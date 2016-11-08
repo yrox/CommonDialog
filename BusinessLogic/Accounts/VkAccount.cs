@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BaseEntyties;
+using BusinessLogic.Data;
 using BusinessLogic.Interfaces;
 using VkNet;
 using VkNet.Enums.Filters;
@@ -14,62 +15,62 @@ namespace BusinessLogic.Accounts
         public VkAccount(Account acc)
         {
             AccountType = acc.Type;
-            api = new VkApi();
+            _api = new VkApi();
             Authorize(acc.Login, acc.Password);
         }
 
         public string AccountType { get; }
 
-        private VkApi api;
+        private VkApi _api;
 
-        private Func<string> code = () =>
+        private Func<string> _code = () =>
         {
-            Console.Write("Please enter code: ");
+            Console.Write("Please enter _code: ");
             string value = Console.ReadLine();
 
             return value;
         };
         private void Authorize(string login, string password)
         {
-            api.Authorize(new ApiAuthParams
+            _api.Authorize(new ApiAuthParams
             {
                 ApplicationId = 5678626,
                 Login = "+375298857813",
                 Password = "MWAHAHA17954gotteenn90years",
                 Settings = Settings.All,
-                TwoFactorAuthorization = code
+                TwoFactorAuthorization = _code
             });
         }
 
         public IEnumerable<Contact> GetAllContacts()
         {
-            return api.Friends.Get(api.UserId.Value).Select(item => GetContact(item.Id)).ToList();
+            return _api.Friends.Get(_api.UserId.Value).Select(item => GetContact(item.Id)).ToList();
         }
         public Contact GetContact(string name)
         {
-            var c = api.Friends.Search(new FriendsSearchParams
+            var c = _api.Friends.Search(new FriendsSearchParams
             {
-                UserId = (long)api.UserId,
+                UserId = (long)_api.UserId,
                 Query = name
             });
             return EntytiesMapper.Map(c.First());
         }
         public Contact GetContact(long id)
         {
-            return EntytiesMapper.Map(api.Users.Get(id));
+            return EntytiesMapper.Map(_api.Users.Get(id));
         }
 
-        public void SendMessage(string text, Contact contact)
+        public void SendMessage(Message message)
         {
-            api.Messages.Send(new MessagesSendParams
+            _api.Messages.Send(new MessagesSendParams
             {
-                UserId = api.UserId,
-                Message = text
+                UserId = _api.UserId,
+                Message = message.Text
             });
         }
         public IEnumerable<Message> GetMessagesByContact(Contact contact)
         {
-           var s = api.Messages.GetHistory(
+           var s = _api.Messages.GetHistory(
                 new MessagesGetHistoryParams
                 {
                     UserId = GetContact(contact.Name).ContactIdentifier,
