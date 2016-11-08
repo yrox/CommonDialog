@@ -16,6 +16,14 @@ namespace DataLayer.Repositories
         }
 
         private CommonDialogContext _db;
+
+        public bool Contains(Contact item)
+        {
+            return _db.Contacts.Any(
+                     c => c.GeneralContact == item.GeneralContact &&
+                     c.ContactIdentifier == item.ContactIdentifier &&
+                     c.Type == item.Type);
+        }
         public IEnumerable<Contact> GetAll()
         {
             return _db.Contacts;

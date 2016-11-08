@@ -15,6 +15,11 @@ namespace DataLayer.Repositories
         }
 
         private CommonDialogContext _db;
+
+        public bool Contains(Account item)
+        {
+            return _db.Accounts.Any(a => a.AccountIdentifier == item.AccountIdentifier && a.Type == item.Type);
+        }
         public IEnumerable<Account> GetAll()
         {
             return _db.Accounts;
