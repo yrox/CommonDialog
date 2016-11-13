@@ -5,6 +5,8 @@ namespace BusinessLogic.Interfaces
 {
     public interface IAccount : IMessaging, IContacts
     {
+        //IAccount CreateAccount(Account acc);
         string AccountType { get; }
+        
     }
 }

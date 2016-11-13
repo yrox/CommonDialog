@@ -36,8 +36,22 @@ namespace DataLayer.Repositories
 
         public void Add(GeneralContact item)
         {
-            _db.GeneralContacts.Add(item);
-            
+            if (!Contains(item))
+            {
+                _db.GeneralContacts.Add(item);
+            }
+            else
+            {
+                Update(item);
+            }
+        }
+
+        public void AddRange(IEnumerable<GeneralContact> items)
+        {
+            foreach (var item in items)
+            {
+                Add(item);
+            }
         }
 
         public void Update(GeneralContact item)

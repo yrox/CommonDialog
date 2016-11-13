@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BaseEntyties;
 using System.Data.Entity;
+using System.Runtime.InteropServices;
 using DataLayer.Interfaces;
 
 namespace DataLayer.Repositories
@@ -35,8 +36,23 @@ namespace DataLayer.Repositories
 
         public void Add(Account item)
         {
-            _db.Accounts.Attach(item);
-            _db.Entry(item).State = EntityState.Added;
+            if (!Contains(item))
+            {
+                _db.Accounts.Attach(item);
+                _db.Entry(item).State = EntityState.Added;
+            }
+            else
+            {
+                Update(item);
+            }
+            
+        }
+        public void AddRange(IEnumerable<Account> items)
+        {
+            foreach (var item in items)
+            {
+                Add(item);
+            }
         }
 
         public void Update(Account item)

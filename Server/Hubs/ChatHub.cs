@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using BaseEntyties;
 using Microsoft.AspNet.SignalR;
 using BusinessLogic;
 
@@ -6,16 +8,73 @@ namespace Server.Hubs
 {
     public class ChatHub : Hub
     {
-        public ChatHub(SomeClassWithSuitableName x)
+        public ChatHub(ServerAPI serverApi)
         {
-            this.x = x;
+            _serverApi = serverApi;
         }
 
-        private SomeClassWithSuitableName x;
+        private ServerAPI _serverApi;
+
+        public void MessageRecived(Message message)
+        {
+            Clients.Client(Context.ConnectionId).MessageRecived(message);
+        }
+
+        public void SendMessage(Message message)
+        {
+            _serverApi.SendMesage(message);
+        }
+
+        public void SaveAccount(Account acc)
+        {
+            _serverApi.SaveAccount(acc);
+        }
+        public void SaveGenContact(GeneralContact genContact)
+        {
+            _serverApi.SaveGenContact(genContact);
+        }
+        public IEnumerable<Message> GetDbMessageHistory(GeneralContact genContact)
+        {
+            return _serverApi.GetDbMessageHistory(genContact);
+        }
+        public IEnumerable<Contact> GetDbContactsOf(GeneralContact genContact)
+        {
+            return _serverApi.GetDbContactsOf(genContact);
+        }
+        public IEnumerable<GeneralContact> GetDbGenContacts()
+        {
+            return _serverApi.GetDbGenContacts();
+        }
+
+        public IEnumerable<Message> LoadMessageHistory(GeneralContact genContact)
+        {
+            return _serverApi.LoadMessageHistoryOfGenContact(genContact);
+        }
+        public IEnumerable<Message> LoadMessageHistory(Contact contact)
+        {
+            return _serverApi.LoadMessageHistoryOfContact(contact);
+        }
+
+        public IEnumerable<Contact> LoadContactsOfType(string type)
+        {
+            return _serverApi.LoadContactsOfType(type);
+        }
+        public IEnumerable<Contact> LoadAllContacts()
+        {
+            return _serverApi.LoadAllContacts();
+        } 
+        public Contact GetContact(string type, int id)
+        {
+            return _serverApi.GetContact(type, id);
+        }
+        public Contact GetContact(string type, string nameOrPhneNumber)
+        {
+            return _serverApi.GetContact(type, nameOrPhneNumber);
+        }
 
         public override Task OnConnected()
         {
-            int hereIsSomeCode;
+            Groups.Add(Context.ConnectionId, Context.User.Identity.Name);
             // load changes
             return base.OnConnected();
         }

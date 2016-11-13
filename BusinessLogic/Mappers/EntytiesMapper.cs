@@ -3,7 +3,7 @@ using System.Linq;
 using AutoMapper;
 using BaseEntyties;
 
-namespace BusinessLogic.Data
+namespace BusinessLogic.Mappers
 {
     public class EntytiesMapper
     {
@@ -12,22 +12,27 @@ namespace BusinessLogic.Data
             Mapper.Initialize(cfg => cfg.CreateMap<VkNet.Model.User, Contact>()
                 .ForMember("ContactIdentifier", x => x.MapFrom(c => c.Id))
                 .ForMember("Name", x => x.MapFrom(c => c.FirstName + " " + c.LastName)));
-            return Mapper.Map<VkNet.Model.User, Contact>(vkCon);
+            var contact = Mapper.Map<VkNet.Model.User, Contact>(vkCon);
+            contact.Type = "Vk";
+            return contact;
         }
         public static IEnumerable<Contact> Map(IEnumerable<VkNet.Model.User> vkConEnumerable)
         {
             return vkConEnumerable.Select(Map).ToList();
         }
 
-        public static Message Map(VkNet.Model.Message vkMes)
+        public static Message Map(VkNet.Model.Message vkMes, int genContactId)
         {
             Mapper.Initialize(cfg => cfg.CreateMap<VkNet.Model.Message, Message>()
                 .ForMember("Text", x => x.MapFrom(c => c.Body))
                 .ForMember("DateTime", x => x.MapFrom(c => c.Date))
                 .ForMember("ContactIdentifier", x => x.MapFrom(c => c.UserId)));
-            return Mapper.Map<VkNet.Model.Message, Message>(vkMes);
+            var message = Mapper.Map<VkNet.Model.Message, Message>(vkMes);
+            message.Type = "Vk";
+            message.GeneralContact.Id = genContactId;
+            return message;
         }
-        public static IEnumerable<Message> Map(IEnumerable<VkNet.Model.Message> vkMesEnumerable)
+        public static IEnumerable<Message> Map(IEnumerable<VkNet.Model.Message> vkMesEnumerable, int genContactId)
         {
             return vkMesEnumerable.Select(Map).ToList();
         }

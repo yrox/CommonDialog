@@ -156,7 +156,7 @@
     };
 
     signalR._ = {
-        defaultContentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        defaultContentType: "application/serverApi-www-form-urlencoded; charset=UTF-8",
 
         ieVersion: (function () {
             var version,

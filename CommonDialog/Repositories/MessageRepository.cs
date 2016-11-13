@@ -40,8 +40,23 @@ namespace DataLayer.Repositories
 
         public void Add(Message item)
         {
-            _db.Messages.Attach(item);
-            _db.Entry(item).State = EntityState.Added;
+            if(!Contains(item))
+            {
+                _db.Messages.Attach(item);
+                _db.Entry(item).State = EntityState.Added;
+            }
+            else
+            {
+                Update(item);
+            }
+        }
+
+        public void AddRange(IEnumerable<Message> items)
+        {
+            foreach (var item in items.Where(item => !Contains(item)))
+            {
+                Add(item);
+            }
         }
 
         public void Update(Message item)

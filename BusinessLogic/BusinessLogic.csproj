@@ -57,9 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\Contacts.cs" />
-    <Compile Include="Data\DataHandler.cs" />
-    <Compile Include="SomeClassWithSuitableName.cs" />
-    <Compile Include="Data\EntytiesMapper.cs" />
+    <Compile Include="Logic\DataHandler.cs" />
+    <Compile Include="ServerAPI.cs" />
+    <Compile Include="Mappers\EntytiesMapper.cs" />
     <Compile Include="Interfaces\IAccount.cs" />
     <Compile Include="Interfaces\IContacts.cs" />
     <Compile Include="Interfaces\IMessaging.cs" />

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using BaseEntyties;
-using BusinessLogic.Data;
 using BusinessLogic.Interfaces;
+using BusinessLogic.Mappers;
 using VkNet;
 using VkNet.Enums.Filters;
 using VkNet.Model.RequestParams;
@@ -12,14 +12,19 @@ namespace BusinessLogic.Accounts
 {
     public class VkAccount : IAccount
     {
-        public VkAccount(Account acc)
+        public VkAccount()//(Account acc)
         {
-            AccountType = acc.Type;
             _api = new VkApi();
-            Authorize(acc.Login, acc.Password);
+            Authorize();
+            //Authorize(acc.Login, acc.Password);
+            //AccountType = acc.Type;
         }
-
+        //public IAccount CreateAccount(Account acc)
+        //{
+        //    return new VkAccount(acc);
+        //}
         public string AccountType { get; }
+
 
         private VkApi _api;
 
@@ -30,7 +35,7 @@ namespace BusinessLogic.Accounts
 
             return value;
         };
-        private void Authorize(string login, string password)
+        private void Authorize()//(string login, string password)
         {
             _api.Authorize(new ApiAuthParams
             {
@@ -41,6 +46,7 @@ namespace BusinessLogic.Accounts
                 TwoFactorAuthorization = _code
             });
         }
+        
 
         public IEnumerable<Contact> GetAllContacts()
         {
@@ -76,7 +82,7 @@ namespace BusinessLogic.Accounts
                     UserId = GetContact(contact.Name).ContactIdentifier,
                     StartMessageId = -1
                 });
-            return EntytiesMapper.Map(s.Messages);
+            return EntytiesMapper.Map(s.Messages, contact.GeneralContact.Id);
         } 
 
     }

@@ -3,16 +3,21 @@ using System.Linq;
 using BaseEntyties;
 using DataLayer;
 
-namespace BusinessLogic.Data
+namespace BusinessLogic.Logic
 {
     public class DataHandler
     {
-        public DataHandler(UnitOfWork data)
+        private DataHandler()
         {
-            _data = data;
+            _data = new UnitOfWork();
         }
 
         private UnitOfWork _data;
+
+        public static DataHandler CreateDataHandler()
+        {
+            return new DataHandler();
+        }
 
         public IEnumerable<Message> GetDbMessageHistory(GeneralContact genContact)
         {
@@ -23,47 +28,52 @@ namespace BusinessLogic.Data
             return _data.GeneralContacts.Get(genContact.Id).Messages.Where(m => m.Type == type);
         }
 
-        public IEnumerable<Contact> GetAllDbContacts(GeneralContact genContact)
+        public IEnumerable<Contact> GetDbContactsOf(GeneralContact genContact)
         {
             return _data.GeneralContacts.Get(genContact.Id).Contacts;
         }
+        public IEnumerable<GeneralContact> GetDbGenContacts()
+        {
+            return _data.GeneralContacts.GetAll();
+        }
 
-        private void Update(GeneralContact genContact)
+        public IEnumerable<Account> GetDbAccounts()
         {
-            _data.GeneralContacts.Update(genContact);
-            SaveChanges();
-        }
-        private void Update(Contact сontact)
-        {
-            _data.Contacts.Update(сontact);
-            SaveChanges();
-        }
-        private void Update(Message message)
-        {
-            _data.Messages.Update(message);
-            SaveChanges();
-        }
+            return _data.Accounts.GetAll();
+        } 
+        
 
         public void Save(Message message)
         {
-            if (!_data.Messages.Contains(message))
-            {
-                _data.Messages.Add(message);
-            }
-            Update(message);
+            _data.Messages.Add(message);
+        }
+        public void SaveRange(IEnumerable<Message> messages)
+        {
+            _data.Messages.AddRange(messages);
         }
         public void Save(Contact contact)
         {
             _data.Contacts.Add(contact);
-            Update(contact);
+        }
+        public void SaveRange(IEnumerable<Contact> contacts)
+        {
+            _data.Contacts.AddRange(contacts);
         }
         public void Save(Account acc)
         {
             _data.Accounts.Add(acc);
         }
+        public void SaveRange(IEnumerable<Account> accounts)
+        {
+            _data.Accounts.AddRange(accounts);
+        }
         public void Save(GeneralContact genContact)
         {
             _data.GeneralContacts.Add(genContact);
+        }
+        public void SaveRange(IEnumerable<GeneralContact> genContacts)
+        {
+            _data.GeneralContacts.AddRange(genContacts);
         }
 
         public void SaveChanges()

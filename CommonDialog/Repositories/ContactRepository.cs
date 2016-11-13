@@ -39,8 +39,22 @@ namespace DataLayer.Repositories
 
         public void Add(Contact item)
         {
-            _db.Contacts.Attach(item);
-            _db.Entry(item).State = EntityState.Added;
+            if (!Contains(item))
+            {
+                _db.Contacts.Attach(item);
+                _db.Entry(item).State = EntityState.Added;
+            }
+            else
+            {
+                Update(item);
+            }
+        }
+        public void AddRange(IEnumerable<Contact> items)
+        {
+            foreach (var item in items)
+            {
+                Add(item);
+            }
         }
 
         public void Update(Contact item)
