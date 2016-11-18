@@ -6,28 +6,26 @@
         xmlns:local="clr-namespace:DesktopClient"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
     <Grid>
-        <ListView x:Name="GenContactsListView" HorizontalAlignment="Left" Height="281" Margin="0,30,0,0" VerticalAlignment="Top" Width="147">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
+        <ListView x:Name="GenContactsListView" HorizontalAlignment="Left" Height="281" Margin="0,30,0,0" VerticalAlignment="Top" Width="147" ItemsSource="{Binding ElementName=GenContacts}" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedGeneralContact}">
         </ListView>
         <Button x:Name="CreateGenConactButton" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="147" RenderTransformOrigin="0.519,-0.558" Height="29"/>
-        <ScrollViewer x:Name="DialogScrollViewer" HorizontalAlignment="Left" Height="273" Margin="148,-4,0,0" VerticalAlignment="Top" Width="367" RenderTransformOrigin="0.5,0.5">
-            <ScrollViewer.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.233"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </ScrollViewer.RenderTransform>
-            <StackPanel x:Name="DialogStack" Height="270" Width="352"/>
-        </ScrollViewer>
+
         <TextBox x:Name="SendTextBox" HorizontalAlignment="Left" Height="44" Margin="152,274,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="291"/>
         <Button x:Name="SendButton" Content="Button" HorizontalAlignment="Left" Margin="448,274,0,0" VerticalAlignment="Top" Width="70" Height="44"/>
+        <ListView x:Name="MessagesListView" HorizontalAlignment="Left" Height="259" Margin="152,10,0,0" VerticalAlignment="Top" Width="366" ItemsSource="{Binding SelectedGeneralContact.Messages}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <TextBlock Text="{Binding Text}" DockPanel.Dock="Left"></TextBlock>
+                        <TextBlock Text="{Binding DateTime}" DockPanel.Dock="Right"> </TextBlock>
+                    </DockPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
     </Grid>
 </Window>

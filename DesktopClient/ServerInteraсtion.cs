@@ -45,7 +45,7 @@ namespace DesktopClient
         {
             //notify
         }
-
+ 
         public string UserName { get; set; }
         public IHubProxy HubProxy { get; set; }
         const string ServerURI = @"http://localhost:8080/";

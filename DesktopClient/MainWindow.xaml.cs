@@ -12,17 +12,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BaseEntyties;
 
 namespace DesktopClient
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ViewModel();
+        }
+
+        public List<GeneralContact> GenContacts;
+
+        private void DisplayMessages()
+        {
+            var binding = new Binding("Messages");
+            binding.Source = GenContactsListView.SelectedItem;
+            binding.Mode = BindingMode.TwoWay;
+            
+            MessagesListView.SetBinding(ListView.ItemsSourceProperty, binding);
         }
     }
 }

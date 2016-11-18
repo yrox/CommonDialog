@@ -6,6 +6,7 @@ using BusinessLogic.Interfaces;
 using BusinessLogic.Mappers;
 using VkNet;
 using VkNet.Enums.Filters;
+using VkNet.Exception;
 using VkNet.Model.RequestParams;
 
 namespace BusinessLogic.Accounts
@@ -19,10 +20,7 @@ namespace BusinessLogic.Accounts
             //Authorize(acc.Login, acc.Password);
             //AccountType = acc.Type;
         }
-        //public IAccount CreateAccount(Account acc)
-        //{
-        //    return new VkAccount(acc);
-        //}
+        
         public string AccountType { get; }
 
 
@@ -37,14 +35,28 @@ namespace BusinessLogic.Accounts
         };
         private void Authorize()//(string login, string password)
         {
-            _api.Authorize(new ApiAuthParams
+            try
             {
-                ApplicationId = 5678626,
-                Login = "+375298857813",
-                Password = "MWAHAHA17954gotteenn90years",
-                Settings = Settings.All,
-                TwoFactorAuthorization = _code
-            });
+                _api.Authorize(new ApiAuthParams
+                {
+                    ApplicationId = 5678626,
+                    Login = "",
+                    Password = "",
+                    Settings = Settings.All,
+                    TwoFactorAuthorization = _code
+                });
+            }
+            catch (CaptchaNeededException cEx)
+            {
+                
+            }
+        }
+
+        private void CaptchaHandler(CaptchaNeededException ex)
+        {
+            //string captchaUrl = ex.Img;
+            //string captchaKey = SomeCaptchaHandler(captchaUrl); /// Обработка капчи: загружаем через что-то изображение, выводим его, вводим ответ, идем дальше
+            //_api.Message.Send(..... , ex.Sid, captchaKey);
         }
         
 
