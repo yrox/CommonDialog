@@ -10,7 +10,7 @@ namespace BaseEntyties
         public string Type { get; set; }
         public int ContactIdentifier { get; set; }
 
-        public virtual GeneralContact GeneralContact { get; set; }
+        public virtual MetaContact MetaContact { get; set; }
 
     }
 }

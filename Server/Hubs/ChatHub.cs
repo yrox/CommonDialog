@@ -8,12 +8,17 @@ namespace Server.Hubs
 {
     public class ChatHub : Hub
     {
-        public ChatHub(ServerAPI serverApi)
+        public ChatHub(API serverApi)
         {
             _serverApi = serverApi;
         }
 
-        private ServerAPI _serverApi;
+        private API _serverApi;
+
+        public void Authorise()
+        {
+            
+        }
 
         public void MessageRecived(Message message)
         {
@@ -29,28 +34,28 @@ namespace Server.Hubs
         {
             _serverApi.SaveAccount(acc);
         }
-        public void SaveGenContact(GeneralContact genContact)
+        public void SaveMetaContact(MetaContact metaContact)
         {
-            _serverApi.SaveGenContact(genContact);
+            _serverApi.SavemetaContact(metaContact);
         }
-        public IEnumerable<Message> GetDbMessageHistory(GeneralContact genContact)
+        public IEnumerable<Message> GetDbMessageHistory(MetaContact metaContact)
         {
-            return _serverApi.GetDbMessageHistory(genContact);
+            return _serverApi.GetDbMessageHistory(metaContact);
         }
-        public IEnumerable<Contact> GetDbContactsOf(GeneralContact genContact)
+        public IEnumerable<Contact> GetDbContactsOf(MetaContact metaContact)
         {
-            return _serverApi.GetDbContactsOf(genContact);
+            return _serverApi.GetDbContactsOf(metaContact);
         }
-        public IEnumerable<GeneralContact> GetDbGenContacts()
+        public IEnumerable<MetaContact> GetDbMetaContacts()
         {
-            return _serverApi.GetDbGenContacts();
+            return _serverApi.GetDbmetaContacts();
         }
 
-        public IEnumerable<Message> LoadMessageHistory(GeneralContact genContact)
+        public IEnumerable<Message> LoadMetaMessageHistory(MetaContact metaContact)
         {
-            return _serverApi.LoadMessageHistoryOfGenContact(genContact);
+            return _serverApi.LoadMessageHistoryOfMetaContact(metaContact);
         }
-        public IEnumerable<Message> LoadMessageHistory(Contact contact)
+        public IEnumerable<Message> LoadContactMessageHistory(Contact contact)
         {
             return _serverApi.LoadMessageHistoryOfContact(contact);
         }
@@ -63,7 +68,7 @@ namespace Server.Hubs
         {
             return _serverApi.LoadAllContacts();
         } 
-        public Contact GetContact(string type, int id)
+        public Contact GetContactById(string type, int id)
         {
             return _serverApi.GetContact(type, id);
         }

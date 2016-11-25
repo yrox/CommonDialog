@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Drawing;
+using System.Net.Mime;
 using BaseEntyties;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Mappers;
@@ -13,18 +17,19 @@ namespace BusinessLogic.Accounts
 {
     public class VkAccount : IAccount
     {
-        public VkAccount()//(Account acc)
+        public VkAccount(Account acc)
         {
             _api = new VkApi();
-            Authorize();
-            //Authorize(acc.Login, acc.Password);
-            //AccountType = acc.Type;
+            Authorize(acc.Login, acc.Password);
+            AccountType = acc.Type;
         }
         
         public string AccountType { get; }
 
-
+        private const int _appId = 5678626;
         private VkApi _api;
+        private string _captchaKey;
+        private long _captchsSid;
 
         private Func<string> _code = () =>
         {
@@ -33,13 +38,13 @@ namespace BusinessLogic.Accounts
 
             return value;
         };
-        private void Authorize()//(string login, string password)
+        public void Authorize(string login, string password)
         {
             try
             {
                 _api.Authorize(new ApiAuthParams
                 {
-                    ApplicationId = 5678626,
+                    ApplicationId = _appId,
                     Login = "",
                     Password = "",
                     Settings = Settings.All,
@@ -48,15 +53,24 @@ namespace BusinessLogic.Accounts
             }
             catch (CaptchaNeededException cEx)
             {
-                
+                CaptchaHandler(cEx);
             }
+            _api.Authorize(new ApiAuthParams
+            {
+                ApplicationId = _appId,
+                Login = "",
+                Password = "",
+                Settings = Settings.All,
+                CaptchaKey = _captchaKey,
+                CaptchaSid = _captchsSid
+            });
         }
 
         private void CaptchaHandler(CaptchaNeededException ex)
         {
+            var client = new WebClient();
+            var image =new Bitmap(new MemoryStream(client.DownloadData(ex.Img)));
             //string captchaUrl = ex.Img;
-            //string captchaKey = SomeCaptchaHandler(captchaUrl); /// Обработка капчи: загружаем через что-то изображение, выводим его, вводим ответ, идем дальше
-            //_api.Message.Send(..... , ex.Sid, captchaKey);
         }
         
 
@@ -94,7 +108,7 @@ namespace BusinessLogic.Accounts
                     UserId = GetContact(contact.Name).ContactIdentifier,
                     StartMessageId = -1
                 });
-            return EntytiesMapper.Map(s.Messages, contact.GeneralContact.Id);
+            return EntytiesMapper.Map(s.Messages, contact.MetaContact.Id);
         } 
 
     }

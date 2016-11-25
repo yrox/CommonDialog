@@ -33,7 +33,7 @@ namespace DesktopClient
             }
             catch (HttpRequestException)
             {
-                //Unable to connect to server
+                //notify
                 return;
             }
         }
@@ -51,6 +51,9 @@ namespace DesktopClient
         const string ServerURI = @"http://localhost:8080/";
         public HubConnection Connection { get; set; }
 
+        public void Authorise()
+        { }
+
         public void SendMessage(Message message)
         {
             HubProxy.Invoke("SendMessage", message);
@@ -60,32 +63,32 @@ namespace DesktopClient
         {
             HubProxy.Invoke("SaveAccount", account);
         }
-        public void SaveGenContact(GeneralContact genContact)
+        public void SaveMetaContact(MetaContact metaContact)
         {
-            HubProxy.Invoke("SaveGenContact", genContact);
+            HubProxy.Invoke("SaveMetaContact", metaContact);
         }
-        public async Task<IEnumerable<Message>> GetDbMessageHistory(GeneralContact genContact)
+        public async Task<IEnumerable<Message>> GetDbMessageHistory(MetaContact metaContact)
         {
-            var result = await  Task.FromResult(HubProxy.Invoke<IEnumerable<Message>>("GetDbMessaeHistory", genContact));
+            var result = await  Task.FromResult(HubProxy.Invoke<IEnumerable<Message>>("GetDbMessaeHistory", metaContact));
             return await result;
         }
-        public async Task<IEnumerable<Contact>> GetDbContactsOf(GeneralContact genContact)
+        public async Task<IEnumerable<Contact>> GetDbContactsOf(MetaContact metaContact)
         {
-            var result = await Task.FromResult(HubProxy.Invoke<IEnumerable<Contact>>("GetDbContactsOf", genContact));
+            var result = await Task.FromResult(HubProxy.Invoke<IEnumerable<Contact>>("GetDbContactsOf", metaContact));
             return await result;
         }
-        public async Task<IEnumerable<GeneralContact>> GetDbGenContacts()
+        public async Task<IEnumerable<MetaContact>> GetDbMetaContacts()
         {
-            var result = await Task.FromResult(HubProxy.Invoke<IEnumerable<GeneralContact>>("GetDbGenContacts"));
+            var result = await Task.FromResult(HubProxy.Invoke<IEnumerable<MetaContact>>("GetDbMetaContacts"));
             return await result;
         }
 
-        public async Task<IEnumerable<Message>> LoadMessageHistory(GeneralContact genContact)
+        public async Task<IEnumerable<Message>> LoadMetaMessageHistory(MetaContact metaContact)
         {
-            var result = await Task.FromResult(HubProxy.Invoke<IEnumerable<Message>>("LoadMessageHistory", genContact));
+            var result = await Task.FromResult(HubProxy.Invoke<IEnumerable<Message>>("LoadMessageHistory", metaContact));
             return await result;
         }
-        public async Task<IEnumerable<Message>> LoadMessageHistory(Contact сontact)
+        public async Task<IEnumerable<Message>> LoadContactMessageHistory(Contact сontact)
         {
             var result = await Task.FromResult(HubProxy.Invoke<IEnumerable<Message>>("LoadMessageHistory", сontact));
             return await result;
@@ -100,7 +103,7 @@ namespace DesktopClient
             var result = await Task.FromResult(HubProxy.Invoke<IEnumerable<Contact>>("LoadAllContacts"));
             return await result;
         }
-        public async Task<Contact> GetContact(string type, int id)
+        public async Task<Contact> GetContactById(string type, int id)
         {
             var result = await Task.FromResult(HubProxy.Invoke<Contact>("GetCntact", type, id));
             return await result;

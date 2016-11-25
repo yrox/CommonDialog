@@ -17,7 +17,7 @@ namespace DesktopClient
         { }
 
         public ObservableCollection<Account> Accs;
-        public ObservableCollection<GeneralContact> GenContacts;
+        public ObservableCollection<MetaContact> metaContacts;
 
         private Account _selectedAccount;
         public Account SelectedAccount
@@ -34,15 +34,15 @@ namespace DesktopClient
             }
         }
 
-        private GeneralContact _selectedGeneralContact;
-        public GeneralContact SelectedGeneralContact
+        private MetaContact _selectedMetaContact;
+        public MetaContact SelectedMetaContact
         {
-            get { return _selectedGeneralContact; }
+            get { return _selectedMetaContact; }
             set
             {
-                if (_selectedGeneralContact != value)
+                if (_selectedMetaContact != value)
                 {
-                    SelectedGeneralContact = value;
+                    SelectedMetaContact = value;
                     OnPropertyChanged();
                 }
                 

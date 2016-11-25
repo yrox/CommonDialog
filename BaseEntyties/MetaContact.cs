@@ -2,7 +2,7 @@
 
 namespace BaseEntyties
 {
-    public class GeneralContact 
+    public class MetaContact 
     {
         public int Id { get; set; }
         public string Name { get; set; }

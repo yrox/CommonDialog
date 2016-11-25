@@ -26,15 +26,8 @@ namespace DesktopClient
             DataContext = new ViewModel();
         }
 
-        public List<GeneralContact> GenContacts;
+        public List<MetaContact> metaContacts;
 
-        private void DisplayMessages()
-        {
-            var binding = new Binding("Messages");
-            binding.Source = GenContactsListView.SelectedItem;
-            binding.Mode = BindingMode.TwoWay;
-            
-            MessagesListView.SetBinding(ListView.ItemsSourceProperty, binding);
-        }
+       
     }
 }

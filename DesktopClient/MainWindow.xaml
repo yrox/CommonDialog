@@ -10,13 +10,13 @@
         <local:ViewModel/>
     </Window.DataContext>
     <Grid>
-        <ListView x:Name="GenContactsListView" HorizontalAlignment="Left" Height="281" Margin="0,30,0,0" VerticalAlignment="Top" Width="147" ItemsSource="{Binding ElementName=GenContacts}" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedGeneralContact}">
+        <ListView x:Name="metaContactsListView" HorizontalAlignment="Left" Height="281" Margin="0,30,0,0" VerticalAlignment="Top" Width="147" ItemsSource="{Binding ElementName=metaContacts}" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedMetaContact}">
         </ListView>
         <Button x:Name="CreateGenConactButton" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="147" RenderTransformOrigin="0.519,-0.558" Height="29"/>
 
         <TextBox x:Name="SendTextBox" HorizontalAlignment="Left" Height="44" Margin="152,274,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="291"/>
         <Button x:Name="SendButton" Content="Button" HorizontalAlignment="Left" Margin="448,274,0,0" VerticalAlignment="Top" Width="70" Height="44"/>
-        <ListView x:Name="MessagesListView" HorizontalAlignment="Left" Height="259" Margin="152,10,0,0" VerticalAlignment="Top" Width="366" ItemsSource="{Binding SelectedGeneralContact.Messages}">
+        <ListView x:Name="MessagesListView" HorizontalAlignment="Left" Height="259" Margin="152,10,0,0" VerticalAlignment="Top" Width="366" ItemsSource="{Binding SelectedMetaContact.Messages}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>

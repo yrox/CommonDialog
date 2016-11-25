@@ -8,37 +8,37 @@ using DataLayer.Interfaces;
 
 namespace DataLayer.Repositories
 {
-    public class GeneralContactRepository : IRepository<GeneralContact>
+    public class MetaContactRepository : IRepository<MetaContact>
     {
-        public GeneralContactRepository(CommonDialogContext context)
+        public MetaContactRepository(CommonDialogContext context)
         {
             _db = context;
         }
 
         private CommonDialogContext _db;
 
-        public bool Contains(GeneralContact genContact)
+        public bool Contains(MetaContact metaContact)
         {
-            return _db.GeneralContacts.Any(g => g.Id == genContact.Id || g.Id == 0);
+            return _db.MetaContacts.Any(g => g.Id == metaContact.Id || g.Id == 0);
         }
-        public IEnumerable<GeneralContact> GetAll()
+        public IEnumerable<MetaContact> GetAll()
         {
-            return _db.GeneralContacts;
+            return _db.MetaContacts;
         }
-        public GeneralContact Get(int id)
+        public MetaContact Get(int id)
         {
-            return _db.GeneralContacts.Find(id);
+            return _db.MetaContacts.Find(id);
         }
-        public IEnumerable<GeneralContact> Find(Func<GeneralContact, bool> predicate)
+        public IEnumerable<MetaContact> Find(Func<MetaContact, bool> predicate)
         {
-            return _db.GeneralContacts.Where(predicate).ToList();
+            return _db.MetaContacts.Where(predicate).ToList();
         }
 
-        public void Add(GeneralContact item)
+        public void Add(MetaContact item)
         {
             if (!Contains(item))
             {
-                _db.GeneralContacts.Add(item);
+                _db.MetaContacts.Add(item);
             }
             else
             {
@@ -46,7 +46,7 @@ namespace DataLayer.Repositories
             }
         }
 
-        public void AddRange(IEnumerable<GeneralContact> items)
+        public void AddRange(IEnumerable<MetaContact> items)
         {
             foreach (var item in items)
             {
@@ -54,14 +54,14 @@ namespace DataLayer.Repositories
             }
         }
 
-        public void Update(GeneralContact item)
+        public void Update(MetaContact item)
         {
             _db.Entry(item).State = EntityState.Detached;
             _db.UpdateGraph(item, map => map.OwnedCollection(x => x.Contacts));
             _db.UpdateGraph(item, map => map.OwnedCollection(x => x.Messages));
         }
 
-        public void Delete(GeneralContact item)
+        public void Delete(MetaContact item)
         {
             _db.Entry(item).State = EntityState.Deleted;
         }

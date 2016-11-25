@@ -7,9 +7,9 @@ using BusinessLogic.Logic;
 
 namespace BusinessLogic
 {
-    public class ServerAPI
+    public class API
     {
-        public ServerAPI()
+        public API()
         {
             _dataHandler = DataHandler.CreateDataHandler();
             _contacts = new Contacts();
@@ -25,35 +25,39 @@ namespace BusinessLogic
         private Contacts _contacts;
         private DataHandler _dataHandler;
 
-        //private void CreateAccs()
-        //{
-        //    _accs = new List<IAccount>();
-        //    foreach (var acc in _dataHandler.GetDbAccounts())
-        //    {
-        //        if (acc.Type == "Vk")
-        //            _accs.Add(new VkAccount(acc));
-        //    }
-        //}
-
-        public void SaveGenContact(GeneralContact genContact)
+        private void CreateAccs()
         {
-            _dataHandler.Save(genContact);
+            _accs = new List<IAccount>();
+            foreach (var acc in _dataHandler.GetDbAccounts())
+            {
+                if (acc.Type == "Vk")
+                    _accs.Add(new VkAccount(acc));
+            }
+        }
+        public void Authorise()
+        {
+            
+        }
+
+        public void SavemetaContact(MetaContact metaContact)
+        {
+            _dataHandler.Save(metaContact);
         }
         public void SaveAccount(Account acc)
         {
             _dataHandler.Save(acc);
         }
-        public IEnumerable<Message> GetDbMessageHistory(GeneralContact genContact)
+        public IEnumerable<Message> GetDbMessageHistory(MetaContact metaContact)
         {
-            return _dataHandler.GetDbMessageHistory(genContact);
+            return _dataHandler.GetDbMessageHistory(metaContact);
         }
-        public IEnumerable<GeneralContact> GetDbGenContacts()
+        public IEnumerable<MetaContact> GetDbmetaContacts()
         {
-            return _dataHandler.GetDbGenContacts();
+            return _dataHandler.GetDbmetaContacts();
         }
-        public IEnumerable<Contact> GetDbContactsOf(GeneralContact genContact)
+        public IEnumerable<Contact> GetDbContactsOf(MetaContact metaContact)
         {
-            return _dataHandler.GetDbContactsOf(genContact);
+            return _dataHandler.GetDbContactsOf(metaContact);
         }
 
         public void SendMesage(Message message)
@@ -61,7 +65,7 @@ namespace BusinessLogic
             _dataHandler.Save(message);
             var accToSend = _accs.Single(a => a.AccountType == message.Type);
             _messaging.SendMessage(message, accToSend);
-        }
+        }//initalize datetime
 
         public IEnumerable<Message> LoadMessageHistoryOfContact(Contact contact)
         {
@@ -69,10 +73,10 @@ namespace BusinessLogic
             _dataHandler.SaveRange(messages);
             return messages;
         }
-        public IEnumerable<Message> LoadMessageHistoryOfGenContact(GeneralContact genContact)
+        public IEnumerable<Message> LoadMessageHistoryOfMetaContact(MetaContact metaContact)
         {
             var messages = new List<Message>();
-            foreach (var c in genContact.Contacts)
+            foreach (var c in metaContact.Contacts)
             {
                 messages.AddRange(LoadMessageHistoryOfContact(c));
             }

@@ -21,7 +21,7 @@ namespace BusinessLogic.Mappers
             return vkConEnumerable.Select(Map).ToList();
         }
 
-        public static Message Map(VkNet.Model.Message vkMes, int genContactId)
+        public static Message Map(VkNet.Model.Message vkMes, int metaContactId)
         {
             Mapper.Initialize(cfg => cfg.CreateMap<VkNet.Model.Message, Message>()
                 .ForMember("Text", x => x.MapFrom(c => c.Body))
@@ -29,10 +29,10 @@ namespace BusinessLogic.Mappers
                 .ForMember("ContactIdentifier", x => x.MapFrom(c => c.UserId)));
             var message = Mapper.Map<VkNet.Model.Message, Message>(vkMes);
             message.Type = "Vk";
-            message.GeneralContact.Id = genContactId;
+            message.MetaContact.Id = metaContactId;
             return message;
         }
-        public static IEnumerable<Message> Map(IEnumerable<VkNet.Model.Message> vkMesEnumerable, int genContactId)
+        public static IEnumerable<Message> Map(IEnumerable<VkNet.Model.Message> vkMesEnumerable, int metaContactId)
         {
             return vkMesEnumerable.Select(Map).ToList();
         }

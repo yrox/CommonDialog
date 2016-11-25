@@ -19,22 +19,22 @@ namespace BusinessLogic.Logic
             return new DataHandler();
         }
 
-        public IEnumerable<Message> GetDbMessageHistory(GeneralContact genContact)
+        public IEnumerable<Message> GetDbMessageHistory(MetaContact metaContact)
         {
-            return _data.GeneralContacts.Get(genContact.Id).Messages;
+            return _data.MetaContacts.Get(metaContact.Id).Messages;
         }
-        public IEnumerable<Message> GetDbMessageHistoryOfType(GeneralContact genContact, string type)
+        public IEnumerable<Message> GetDbMessageHistoryOfType(MetaContact metaContact, string type)
         {
-            return _data.GeneralContacts.Get(genContact.Id).Messages.Where(m => m.Type == type);
+            return _data.MetaContacts.Get(metaContact.Id).Messages.Where(m => m.Type == type);
         }
 
-        public IEnumerable<Contact> GetDbContactsOf(GeneralContact genContact)
+        public IEnumerable<Contact> GetDbContactsOf(MetaContact metaContact)
         {
-            return _data.GeneralContacts.Get(genContact.Id).Contacts;
+            return _data.MetaContacts.Get(metaContact.Id).Contacts;
         }
-        public IEnumerable<GeneralContact> GetDbGenContacts()
+        public IEnumerable<MetaContact> GetDbmetaContacts()
         {
-            return _data.GeneralContacts.GetAll();
+            return _data.MetaContacts.GetAll();
         }
 
         public IEnumerable<Account> GetDbAccounts()
@@ -67,13 +67,13 @@ namespace BusinessLogic.Logic
         {
             _data.Accounts.AddRange(accounts);
         }
-        public void Save(GeneralContact genContact)
+        public void Save(MetaContact metaContact)
         {
-            _data.GeneralContacts.Add(genContact);
+            _data.MetaContacts.Add(metaContact);
         }
-        public void SaveRange(IEnumerable<GeneralContact> genContacts)
+        public void SaveRange(IEnumerable<MetaContact> metaContacts)
         {
-            _data.GeneralContacts.AddRange(genContacts);
+            _data.MetaContacts.AddRange(metaContacts);
         }
 
         public void SaveChanges()

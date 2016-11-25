@@ -14,9 +14,9 @@ namespace Server
         {
             GlobalHost.DependencyResolver.Register(
             typeof(ChatHub),
-            () => new ChatHub(new ServerAPI()));
+            () => new ChatHub(new API()));
 
-            app.MapSignalR();
+            app.MapSignalR("/signalr", new HubConfiguration());
         }
     }
 }

@@ -7,7 +7,7 @@ namespace DataLayer
     {
         private CommonDialogContext _db = new CommonDialogContext();
         private AccountRepository _accountRepository;
-        private GeneralContactRepository _generalContactRepository;
+        private MetaContactRepository _MetaContactRepository;
         private MessageRepository _messageRepository;
         private ContactRepository _contactRepository;
 
@@ -22,15 +22,15 @@ namespace DataLayer
                 return _accountRepository;
             }
         }
-        public GeneralContactRepository GeneralContacts
+        public MetaContactRepository MetaContacts
         {
             get
             {
-                if (_generalContactRepository == null)
+                if (_MetaContactRepository == null)
                 {
-                    _generalContactRepository = new GeneralContactRepository(_db);
+                    _MetaContactRepository = new MetaContactRepository(_db);
                 }
-                return _generalContactRepository;
+                return _MetaContactRepository;
             }
         }
         public MessageRepository Messages

@@ -62,7 +62,7 @@ namespace DataLayer.Repositories
         public void Update(Message item)
         {
             _db.Entry(item).State = EntityState.Detached;
-            _db.UpdateGraph(item, map => map.OwnedEntity(x => x.GeneralContact));
+            _db.UpdateGraph(item, map => map.OwnedEntity(x => x.MetaContact));
         }
 
         public void Delete(Message item)
