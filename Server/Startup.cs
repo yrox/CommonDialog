@@ -12,9 +12,10 @@ namespace Server
     {
         public void Configuration(IAppBuilder app)
         {
+            var api = new API();
             GlobalHost.DependencyResolver.Register(
             typeof(ChatHub),
-            () => new ChatHub(new API()));
+            () => new ChatHub(api));
 
             app.MapSignalR("/signalr", new HubConfiguration());
         }

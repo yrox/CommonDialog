@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Drawing;
-using System.Net.Mime;
+using System.Runtime.ExceptionServices;
 using BaseEntyties;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Mappers;
@@ -20,60 +17,55 @@ namespace BusinessLogic.Accounts
         public VkAccount(Account acc)
         {
             _api = new VkApi();
-            Authorize(acc.Login, acc.Password);
-            AccountType = acc.Type;
+            _account = acc;
         }
-        
-        public string AccountType { get; }
 
+        private Account _account;
+       
         private const int _appId = 5678626;
         private VkApi _api;
-        private string _captchaKey;
-        private long _captchsSid;
 
+        public string AccountType { get; }
+
+        private static string code;
         private Func<string> _code = () =>
         {
-            Console.Write("Please enter _code: ");
-            string value = Console.ReadLine();
-
-            return value;
+            return code;
         };
-        public void Authorize(string login, string password)
+
+        public void Authorize(string codeValue)
         {
+            code = codeValue;
             try
             {
                 _api.Authorize(new ApiAuthParams
                 {
                     ApplicationId = _appId,
-                    Login = "",
-                    Password = "",
+                    Login = _account.Login,
+                    Password = _account.Password,
                     Settings = Settings.All,
                     TwoFactorAuthorization = _code
                 });
             }
             catch (CaptchaNeededException cEx)
             {
-                CaptchaHandler(cEx);
+                ExceptionDispatchInfo.Capture(cEx).Throw();
             }
+        }
+
+        public void Authorize(string captcha, long sid)
+        {
             _api.Authorize(new ApiAuthParams
             {
                 ApplicationId = _appId,
-                Login = "",
-                Password = "",
+                Login = _account.Login,
+                Password = _account.Password,
                 Settings = Settings.All,
-                CaptchaKey = _captchaKey,
-                CaptchaSid = _captchsSid
+                CaptchaKey = captcha,
+                CaptchaSid = sid
             });
         }
-
-        private void CaptchaHandler(CaptchaNeededException ex)
-        {
-            var client = new WebClient();
-            var image =new Bitmap(new MemoryStream(client.DownloadData(ex.Img)));
-            //string captchaUrl = ex.Img;
-        }
-        
-
+       
         public IEnumerable<Contact> GetAllContacts()
         {
             return _api.Friends.Get(_api.UserId.Value).Select(item => GetContact(item.Id)).ToList();
@@ -94,10 +86,27 @@ namespace BusinessLogic.Accounts
 
         public void SendMessage(Message message)
         {
+            try
+            {
+                _api.Messages.Send(new MessagesSendParams
+                {
+                    UserId = _api.UserId,
+                    Message = message.Text
+                });
+            }
+            catch (CaptchaNeededException cEx)
+            {
+                ExceptionDispatchInfo.Capture(cEx).Throw();
+            }
+        }
+        public void SendMessage(Message message, string captcha, long sid)
+        {
             _api.Messages.Send(new MessagesSendParams
             {
                 UserId = _api.UserId,
-                Message = message.Text
+                Message = message.Text,
+                CaptchaKey = captcha,
+                CaptchaSid = sid
             });
         }
         public IEnumerable<Message> GetMessagesByContact(Contact contact)

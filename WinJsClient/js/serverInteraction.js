@@ -1,8 +1,31 @@
 ﻿var connection = $.hubConnection("http://localhost:8080/signalr", { useDefaultPath: false });
 var chatProxy = connection.createHubProxy('ChatHub');
 
+
+chatProxy.on("GetCaptcha", function(url) {
+    //notify
+    //call auth with captcha
+});
+
+function authorize(code) {
+    chatProxy.invoke("Authorize", code)
+        .done(function () {
+            return "sucseed";
+        }).fail(function (error) {
+            return "failed";
+        });
+}
+function sendCaptcha(captcha, sid) {
+    chatProxy.invoke("SendCaptcha", captcha, sid)
+        .done(function () {
+            return "sucseed";
+        }).fail(function (error) {
+            return "failed";
+        });
+}
+
 function saveAccount(login, password, type, phone, id) {
-    chatProxy.invoke('SaveAccount', {
+    chatProxy.invoke("SaveAccount", {
             Login: login,
             Password: password,
             Type: type,
@@ -16,7 +39,7 @@ function saveAccount(login, password, type, phone, id) {
         });
 }
 function saveMetaContact(name, contacts, id) {
-    chatProxy.invoke('SaveMetaContact', {
+    chatProxy.invoke("SaveMetaContact", {
         Name: name,
         Contacts: contacts,
         Id: id
@@ -29,7 +52,7 @@ function saveMetaContact(name, contacts, id) {
 }
 
 function sendMessage(text, type, contactId, metaContact) {
-    chatProxy.invoke('SendMessage', {
+    chatProxy.invoke("SendMessage", {
         Text: text,
         Type: type,
         ContactIdentifier: contactId,
@@ -43,7 +66,7 @@ function sendMessage(text, type, contactId, metaContact) {
 }
 
 function getDbMessagHistory(id, name, contacts) {
-    chatProxy.invoke('GetDbMessageHistory', {
+    chatProxy.invoke("GetDbMessageHistory", {
         Name: name,
         Contacts: contacts,
         Id: id
@@ -56,7 +79,7 @@ function getDbMessagHistory(id, name, contacts) {
     
 }
 function getDbContactsOf(id, name) {
-    chatProxy.invoke('GetDbContactsOf', {
+    chatProxy.invoke("GetDbContactsOf", {
         Name: name,
         Id: id
     })
@@ -68,7 +91,7 @@ function getDbContactsOf(id, name) {
 
 }
 function getDbMetaContacts() {
-    chatProxy.invoke('GetDbMetaCotacts')
+    chatProxy.invoke("GetDbMetaCotacts")
         .done(function (contacts) {
             return contacts;
         }).fail(function (error) {
@@ -77,7 +100,7 @@ function getDbMetaContacts() {
 }
 
 function loadMetaMessageHistory(id, name, contacts){
-    chatProxy.invoke('LoadMetaMessageHistory', {
+    chatProxy.invoke("LoadMetaMessageHistory", {
     Name: name,
     Contacts: contacts,
     Id: id
@@ -90,7 +113,7 @@ function loadMetaMessageHistory(id, name, contacts){
     
 }
 function loadContactMessageHistory(id, name, phone, type) {
-    chatProxy.invoke('LoadContactMessageHistory', {
+    chatProxy.invoke("LoadContactMessageHistory", {
         Name: name,
         PhoneNumber: phone,
         Id: id,
@@ -105,7 +128,7 @@ function loadContactMessageHistory(id, name, phone, type) {
 }
 
 function loadContactsOfType(type) {
-    chatProxy.invoke('LoadContactsOfType', type)
+    chatProxy.invoke("LoadContactsOfType", type)
         .done(function (contacts) {
             return contacts;
         }).fail(function (error) {
@@ -113,7 +136,7 @@ function loadContactsOfType(type) {
         });
 }
 function loadAllContacts() {
-    chatProxy.invoke('LoadAllContacts')
+    chatProxy.invoke("LoadAllContacts")
         .done(function (contacts) {
             return contacts;
         }).fail(function (error) {
@@ -121,7 +144,7 @@ function loadAllContacts() {
         });
 }
 function getContactById(id, type) {
-    chatProxy.invoke('GetContactById', type, id)
+    chatProxy.invoke("GetContactById", type, id)
         .done(function (contact) {
             return contact;
         }).fail(function (error) {
@@ -129,12 +152,14 @@ function getContactById(id, type) {
         });
 }
 function getContact(type, nameOrPhone) {
-    chatProxy.invoke('GetContact', type, nameOrPhone)
+    chatProxy.invoke("GetContact", type, nameOrPhone)
         .done(function (contact) {
             return contact;
         }).fail(function (error) {
             return "failed";
         });
 }
+
+
 //var chatHub = $.connection.ChatHub;
 //chatHub.client.SaveAccount({Type: ""})

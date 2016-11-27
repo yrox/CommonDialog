@@ -10,6 +10,11 @@ namespace BusinessLogic.Logic
         {
             acc.SendMessage(message);
         }
+
+        public void SendMessage(Message message, IMessaging acc, string captcha, long sid)
+        {
+            acc.SendMessage(message, captcha, sid);
+        }
         public IEnumerable<Message> LoadHistory(Contact contact, IMessaging acc)
         {
             return acc.GetMessagesByContact(contact);

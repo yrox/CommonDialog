@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using BaseEntyties;
 using BusinessLogic.Accounts;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Logic;
+using Ninject;
+using Ninject.Parameters;
+using VkNet.Exception;
 
 namespace BusinessLogic
 {
@@ -14,9 +19,7 @@ namespace BusinessLogic
             _dataHandler = DataHandler.CreateDataHandler();
             _contacts = new Contacts();
             _messaging = new Messaging();
-            _accs = new List<IAccount>();
-            _accs.Add(new VkAccount());
-           // CreateAccs();
+            CreateAccs();
             
         }
 
@@ -28,16 +31,36 @@ namespace BusinessLogic
         private void CreateAccs()
         {
             _accs = new List<IAccount>();
+            var kernel = new StandardKernel();
             foreach (var acc in _dataHandler.GetDbAccounts())
             {
-                if (acc.Type == "Vk")
-                    _accs.Add(new VkAccount(acc));
+                _accs.Add(kernel.Get<IAccount>(acc.Type, new ConstructorArgument("AccData", acc)));
             }
         }
-        public void Authorise()
+        public void Authorize(string code)
         {
-            
+            try
+            {
+                foreach (var acc in _accs)
+                {
+                    if (acc.AccountType == "Vk")
+                        acc.Authorize(code);
+                }
+            }
+
+            catch (CaptchaNeededException cEx)
+            {
+                ExceptionDispatchInfo.Capture(cEx).Throw();
+            }
         }
+        public void Authorize(string captcha, long sid)
+        {
+            foreach (var acc in _accs)
+            {
+                acc.Authorize(captcha, sid);
+            }
+        }
+
 
         public void SavemetaContact(MetaContact metaContact)
         {
@@ -66,6 +89,12 @@ namespace BusinessLogic
             var accToSend = _accs.Single(a => a.AccountType == message.Type);
             _messaging.SendMessage(message, accToSend);
         }//initalize datetime
+        public void SendMesage(Message message, string captcha, long sid)
+        {
+            _dataHandler.Save(message);
+            var accToSend = _accs.Single(a => a.AccountType == message.Type);
+            _messaging.SendMessage(message, accToSend, captcha, sid);
+        }
 
         public IEnumerable<Message> LoadMessageHistoryOfContact(Contact contact)
         {

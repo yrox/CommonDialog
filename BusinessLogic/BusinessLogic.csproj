@@ -69,6 +69,7 @@
     <Compile Include="Interfaces\IContacts.cs" />
     <Compile Include="Interfaces\IMessaging.cs" />
     <Compile Include="Logic\Messaging.cs" />
+    <Compile Include="NinjectBinding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Accounts\VkAccount.cs" />
   </ItemGroup>

@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using BaseEntyties;
 using Microsoft.AspNet.SignalR;
 using BusinessLogic;
+using VkNet.Exception;
 
 namespace Server.Hubs
 {
@@ -15,9 +18,27 @@ namespace Server.Hubs
 
         private API _serverApi;
 
-        public void Authorise()
+        private void CaptchaHandler(CaptchaNeededException cEx)
         {
-            
+            //show img
+        }
+        
+        public void Authorize(string code)
+        {
+            try
+            {
+                _serverApi.Authorize(code);
+            }
+
+            catch (CaptchaNeededException cEx)
+            {
+                CaptchaHandler(cEx);
+            }
+
+        }
+        public void SendCaptcha(string captcha, long sid)
+        {
+            _serverApi.Authorize(captcha, sid);
         }
 
         public void MessageRecived(Message message)
