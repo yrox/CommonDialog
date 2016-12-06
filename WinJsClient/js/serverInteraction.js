@@ -1,11 +1,45 @@
 ﻿var connection = $.hubConnection("http://localhost:8080/signalr", { useDefaultPath: false });
-var chatProxy = connection.createHubProxy('ChatHub');
+var chatProxy = connection.createHubProxy("ChatHub");
 
+function showCaptcha(url, sid) {
+    var div = document.createElement("div");
+    div.className = "captcha";
 
-chatProxy.on("GetCaptcha", function(url) {
-    //notify
-    //call auth with captcha
+    var img = document.createElement("img");
+    img.src = url;
+    div.appendChild(img);
+
+    var form = document.createElement("form");
+
+    var txt = document.createElement("input");
+    txt.type = "text";
+    txt.id = "captchaText";
+    form.appendChild(txt);
+
+    var button = document.createElement("button");
+    button.onclick = getCaptcha(sid);
+    var btnName = document.createTextNode("ok");
+    button.appendChild(btnName);
+    form.appendChild(button);
+
+    div.appendChild(form);
+
+    document.body.appendChild(div);
+}
+function getCaptcha(sid) {
+    var captcha = document.getElementById("captchaText").value;
+    sendCaptcha(captcha, sid);
+}
+
+chatProxy.on("RecognizeCaptcha", function (url, sid) {
+    showCaptcha(url, sid);
 });
+
+connection.start().done(doSmth);
+
+function doSmth() {
+    var lalalal = 5;
+}
 
 function authorize(code) {
     chatProxy.invoke("Authorize", code)

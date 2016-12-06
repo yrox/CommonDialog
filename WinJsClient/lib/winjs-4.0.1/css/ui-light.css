@@ -3084,7 +3084,7 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
     color: -ms-hotlight;
   }
 }
-.win-clickeater {
+/*.win-clickeater {
   background-color: transparent;
   width: 110%;
   height: 110%;
@@ -3093,9 +3093,9 @@ button.win-hub-section-header-tabstop:-ms-keyboard-active {
   position: fixed;
   touch-action: none;
   outline: 1px solid Purple;
-  /*Necessary to block passthrough over webviews*/
+  Necessary to block passthrough over webviews
   -ms-high-contrast-adjust: none;
-}
+}*/
 /*
 Command buttons.
 */

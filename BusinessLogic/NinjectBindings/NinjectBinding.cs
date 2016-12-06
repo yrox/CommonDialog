@@ -1,11 +1,10 @@
-﻿using System;
-using BusinessLogic.Accounts;
+﻿using BusinessLogic.Accounts;
 using BusinessLogic.Interfaces;
 using Ninject.Modules;
 
-namespace BusinessLogic
+namespace BusinessLogic.NinjectBindings
 {
-    class NinjectBinding : NinjectModule
+    public class AccountBinding : NinjectModule
     {
         public override void Load()
         {

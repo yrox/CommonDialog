@@ -1,0 +1,9 @@
+﻿body {
+}
+.captcha {
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    left: 50%;
+    top: 50%;
+}

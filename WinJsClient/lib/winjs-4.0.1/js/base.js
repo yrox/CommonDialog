@@ -14889,10 +14889,10 @@ define('WinJS/Application',[
                     wui.addEventListener("suspending", suspendingHandler, false);
                 }
 
-                if (_WinRT.Windows.UI.ApplicationSettings.SettingsPane) {
-                    var settingsPane = _WinRT.Windows.UI.ApplicationSettings.SettingsPane.getForCurrentView();
-                    settingsPane.addEventListener("commandsrequested", commandsRequested);
-                }
+                //if (_WinRT.Windows.UI.ApplicationSettings.SettingsPane) {
+                //    var settingsPane = _WinRT.Windows.UI.ApplicationSettings.SettingsPane.getForCurrentView();
+                //    settingsPane.addEventListener("commandsrequested", commandsRequested);
+                //}
 
                 // Code in WinJS.Application for phone. This integrates WinJS.Application into the hardware back button.
                 if (_WinRT.Windows.Phone.UI.Input.HardwareButtons) {
@@ -14925,10 +14925,10 @@ define('WinJS/Application',[
                     wui.removeEventListener("suspending", suspendingHandler, false);
                 }
 
-                if (_WinRT.Windows.UI.ApplicationSettings.SettingsPane) {
-                    var settingsPane = _WinRT.Windows.UI.ApplicationSettings.SettingsPane.getForCurrentView();
-                    settingsPane.removeEventListener("commandsrequested", commandsRequested);
-                }
+                //if (_WinRT.Windows.UI.ApplicationSettings.SettingsPane) {
+                //    var settingsPane = _WinRT.Windows.UI.ApplicationSettings.SettingsPane.getForCurrentView();
+                //    settingsPane.removeEventListener("commandsrequested", commandsRequested);
+                //}
 
                 // Code in WinJS.Application for phone. This integrates WinJS.Application into the hardware back button.
                 if (_WinRT.Windows.Phone.UI.Input.HardwareButtons) {

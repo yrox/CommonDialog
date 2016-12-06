@@ -32,10 +32,11 @@ namespace BusinessLogic
         {
             _accs = new List<IAccount>();
             var kernel = new StandardKernel();
-            foreach (var acc in _dataHandler.GetDbAccounts())
-            {
-                _accs.Add(kernel.Get<IAccount>(acc.Type, new ConstructorArgument("AccData", acc)));
-            }
+            //foreach (var acc in _dataHandler.GetDbAccounts())
+            //{
+            //    _accs.Add(kernel.Get<IAccount>(acc.Type, new ConstructorArgument("AccData", acc)));
+            //}
+            _accs.Add(new VkAccount(new Account()));
         }
         public void Authorize(string code)
         {

@@ -58,6 +58,11 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="css\addMeta.css" />
+    <Content Include="css\captcha.css" />
+    <Content Include="css\flyouts.css" />
+    <Content Include="css\lists.css" />
+    <Content Include="css\splitView.css" />
     <Content Include="index.html" />
     <Content Include="images\LockScreenLogo.scale-200.png" />
     <Content Include="images\SplashScreen.scale-200.png" />
@@ -66,16 +71,23 @@
     <Content Include="images\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="images\StoreLogo.png" />
     <Content Include="images\Wide310x150Logo.scale-200.png" />
+    <Content Include="js\accounts.js" />
+    <Content Include="js\commonData.js" />
+    <Content Include="js\dialogList.js" />
     <Content Include="js\main.js" />
     <Content Include="css\default.css" />
+    <Content Include="js\metaContactsList.js" />
+    <Content Include="js\models.js" />
     <Content Include="js\serverInteraction.js" />
-    <Content Include="js\worker.js" />
+    <Content Include="js\signIn.js" />
+    <Content Include="js\splitView.js" />
     <Content Include="lib\winjs-4.0.1\js\base.js" />
     <Content Include="lib\winjs-4.0.1\js\ui.js" />
     <Content Include="lib\winjs-4.0.1\css\ui-light.css" />
     <Content Include="lib\winjs-4.0.1\css\ui-dark.css" />
     <Content Include="lib\winjs-4.0.1\fonts\Symbols.ttf" />
     <Content Include="packages.config" />
+    <Content Include="page.html" />
     <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />

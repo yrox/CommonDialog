@@ -20,7 +20,7 @@ namespace Server.Hubs
 
         private void CaptchaHandler(CaptchaNeededException cEx)
         {
-            //show img
+            Clients.All.RecognizeCaptcha(cEx.Img, cEx.Sid);
         }
         
         public void Authorize(string code)
