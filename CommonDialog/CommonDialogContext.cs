@@ -8,6 +8,7 @@ namespace DataLayer
     {
         public CommonDialogContext() : base("CommonDialogDB")
         {
+            this.Configuration.LazyLoadingEnabled = false;
             Database.SetInitializer(new CreateDatabaseIfNotExists<CommonDialogContext>());
             //Database.SetInitializer(new MigrateDatabaseToLatestVersion<CommonDialogContext, Configuration>(@"Data Source=.\SQLEXPRESS;Initial Catalog=CommonDialogDB;Integrated Security=True"));
         }

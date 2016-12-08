@@ -18,6 +18,7 @@ namespace BusinessLogic.Accounts
         {
             _api = new VkApi();
             _account = acc;
+            AccountType = acc.Type;
         }
 
         private Account _account;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BaseEntyties;
+using BusinessLogic.Mappers;
 using DataLayer;
 
 namespace BusinessLogic.Logic
@@ -10,9 +11,11 @@ namespace BusinessLogic.Logic
         private DataHandler()
         {
             _data = new UnitOfWork();
+            _extractor = new DataExtractor();
         }
 
         private UnitOfWork _data;
+        private DataExtractor _extractor;
 
         public static DataHandler CreateDataHandler()
         {
@@ -21,20 +24,20 @@ namespace BusinessLogic.Logic
 
         public IEnumerable<Message> GetDbMessageHistory(MetaContact metaContact)
         {
-            return _data.MetaContacts.Get(metaContact.Id).Messages;
+            return _extractor.Extract(_data.MetaContacts.Get(metaContact.Id).Messages);
         }
         public IEnumerable<Message> GetDbMessageHistoryOfType(MetaContact metaContact, string type)
         {
-            return _data.MetaContacts.Get(metaContact.Id).Messages.Where(m => m.Type == type);
+            return _extractor.Extract(_data.MetaContacts.Get(metaContact.Id).Messages.Where(m => m.Type == type));
         }
 
         public IEnumerable<Contact> GetDbContactsOf(MetaContact metaContact)
         {
-            return _data.MetaContacts.Get(metaContact.Id).Contacts;
+            return _extractor.Extract(_data.Contacts.Find(x => x.MetaContact.Id == metaContact.Id));
         }
         public IEnumerable<MetaContact> GetDbmetaContacts()
         {
-            return _data.MetaContacts.GetAll();
+            return (_data.MetaContacts.GetAll());
         }
 
         public IEnumerable<Account> GetDbAccounts()

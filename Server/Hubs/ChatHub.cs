@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BaseEntyties;
 using Microsoft.AspNet.SignalR;
@@ -22,7 +21,7 @@ namespace Server.Hubs
         {
             Clients.All.RecognizeCaptcha(cEx.Img, cEx.Sid);
         }
-        
+
         public void Authorize(string code)
         {
             try
@@ -36,6 +35,7 @@ namespace Server.Hubs
             }
 
         }
+
         public void SendCaptcha(string captcha, long sid)
         {
             _serverApi.Authorize(captcha, sid);
@@ -55,27 +55,33 @@ namespace Server.Hubs
         {
             _serverApi.SaveAccount(acc);
         }
+
         public void SaveMetaContact(MetaContact metaContact)
         {
             _serverApi.SavemetaContact(metaContact);
         }
+
         public IEnumerable<Message> GetDbMessageHistory(MetaContact metaContact)
         {
-            return _serverApi.GetDbMessageHistory(metaContact);
+            return _serverApi.GetDbMessageHistory(metaContact).ToList();
         }
+
         public IEnumerable<Contact> GetDbContactsOf(MetaContact metaContact)
         {
             return _serverApi.GetDbContactsOf(metaContact);
         }
+
         public IEnumerable<MetaContact> GetDbMetaContacts()
         {
-            return _serverApi.GetDbmetaContacts();
+            return _serverApi.GetDbMetaContacts().ToList();
+
         }
 
         public IEnumerable<Message> LoadMetaMessageHistory(MetaContact metaContact)
         {
             return _serverApi.LoadMessageHistoryOfMetaContact(metaContact);
         }
+
         public IEnumerable<Message> LoadContactMessageHistory(Contact contact)
         {
             return _serverApi.LoadMessageHistoryOfContact(contact);
@@ -85,14 +91,17 @@ namespace Server.Hubs
         {
             return _serverApi.LoadContactsOfType(type);
         }
+
         public IEnumerable<Contact> LoadAllContacts()
         {
             return _serverApi.LoadAllContacts();
-        } 
+        }
+
         public Contact GetContactById(string type, int id)
         {
             return _serverApi.GetContact(type, id);
         }
+
         public Contact GetContact(string type, string nameOrPhneNumber)
         {
             return _serverApi.GetContact(type, nameOrPhneNumber);
@@ -100,10 +109,10 @@ namespace Server.Hubs
 
         public override Task OnConnected()
         {
-            Groups.Add(Context.ConnectionId, Context.User.Identity.Name);
-            // load changes
+            //todo load changes
             return base.OnConnected();
         }
+
         public override Task OnDisconnected(bool stopCalled)
         {
             if (stopCalled)
@@ -120,7 +129,5 @@ namespace Server.Hubs
 
             return base.OnDisconnected(stopCalled);
         }
-
-      
     }
 }

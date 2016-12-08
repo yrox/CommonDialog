@@ -34,6 +34,7 @@ namespace DataLayer.Repositories
         }
         public IEnumerable<Contact> Find(Func<Contact, bool> predicate)
         {
+            _db.Contacts.Load();
             return _db.Contacts.Where(predicate).ToList();
         }
 

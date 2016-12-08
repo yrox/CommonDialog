@@ -35,16 +35,17 @@ chatProxy.on("RecognizeCaptcha", function (url, sid) {
     showCaptcha(url, sid);
 });
 
+connection.logging = true;
 connection.start().done(doSmth);
 
 function doSmth() {
-    var lalalal = 5;
+    getDbMetaContacts();
 }
 
 function authorize(code) {
     chatProxy.invoke("Authorize", code)
         .done(function () {
-            return "sucseed";
+            loadData();
         }).fail(function (error) {
             return "failed";
         });
@@ -112,12 +113,9 @@ function getDbMessagHistory(id, name, contacts) {
         });
     
 }
-function getDbContactsOf(id, name) {
-    chatProxy.invoke("GetDbContactsOf", {
-        Name: name,
-        Id: id
-    })
-        .done(function (contacts) {
+function getDbContactsOf(meta) {
+    chatProxy.invoke("GetDbContactsOf", { Name: meta.Name, Id: meta.Id })
+.done(function (contacts) {
             return contacts;
         }).fail(function (error) {
             return "failed";
@@ -125,11 +123,12 @@ function getDbContactsOf(id, name) {
 
 }
 function getDbMetaContacts() {
-    chatProxy.invoke("GetDbMetaCotacts")
+    chatProxy.invoke("GetDbMetaContacts")
         .done(function (contacts) {
-            return contacts;
+            tempMeta = contacts[1];
+            getDbContactsOf({Name: tempMeta.Name, Id: tempMeta.Id});
         }).fail(function (error) {
-            return "failed";
+            return error.message;
         });
 }
 

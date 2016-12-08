@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using BaseEntyties;
@@ -7,7 +6,6 @@ using BusinessLogic.Accounts;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Logic;
 using Ninject;
-using Ninject.Parameters;
 using VkNet.Exception;
 
 namespace BusinessLogic
@@ -32,11 +30,11 @@ namespace BusinessLogic
         {
             _accs = new List<IAccount>();
             var kernel = new StandardKernel();
-            //foreach (var acc in _dataHandler.GetDbAccounts())
-            //{
-            //    _accs.Add(kernel.Get<IAccount>(acc.Type, new ConstructorArgument("AccData", acc)));
-            //}
-            _accs.Add(new VkAccount(new Account()));
+            foreach (var acc in _dataHandler.GetDbAccounts())
+            {
+                //_accs.Add(kernel.Get<IAccount>(acc.Type, new ConstructorArgument("acc", acc)));
+                _accs.Add(new VkAccount(acc));
+            }
         }
         public void Authorize(string code)
         {
@@ -75,7 +73,7 @@ namespace BusinessLogic
         {
             return _dataHandler.GetDbMessageHistory(metaContact);
         }
-        public IEnumerable<MetaContact> GetDbmetaContacts()
+        public IEnumerable<MetaContact> GetDbMetaContacts()
         {
             return _dataHandler.GetDbmetaContacts();
         }
