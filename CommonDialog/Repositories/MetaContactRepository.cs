@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using BaseEntyties;
 using RefactorThis.GraphDiff;
@@ -14,6 +13,7 @@ namespace DataLayer.Repositories
         public MetaContactRepository(CommonDialogContext context)
         {
             _db = context;
+            _db.Contacts.Load();
         }
 
         private CommonDialogContext _db;

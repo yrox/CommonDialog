@@ -13,6 +13,7 @@ namespace DataLayer.Repositories
         public MessageRepository(CommonDialogContext context)
         {
             _db = context;
+            _db.Messages.Load();
         }
 
         private CommonDialogContext _db;

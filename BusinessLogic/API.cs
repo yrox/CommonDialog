@@ -81,6 +81,10 @@ namespace BusinessLogic
         {
             return _dataHandler.GetDbContactsOf(metaContact);
         }
+        public IEnumerable<Account> GetDbAccounts()
+        {
+            return _dataHandler.GetDbAccounts();
+        }
 
         public void SendMesage(Message message)
         {

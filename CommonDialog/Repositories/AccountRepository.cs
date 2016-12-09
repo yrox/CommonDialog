@@ -13,6 +13,7 @@ namespace DataLayer.Repositories
         public AccountRepository(CommonDialogContext context)
         {
             _db = context;
+            _db.Accounts.Load();
         }
 
         private CommonDialogContext _db;

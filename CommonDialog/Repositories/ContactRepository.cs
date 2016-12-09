@@ -13,6 +13,7 @@ namespace DataLayer.Repositories
         public ContactRepository(CommonDialogContext context)
         {
             _db = context;
+            _db.Contacts.Load();
         }
 
         private CommonDialogContext _db;
@@ -34,7 +35,6 @@ namespace DataLayer.Repositories
         }
         public IEnumerable<Contact> Find(Func<Contact, bool> predicate)
         {
-            _db.Contacts.Load();
             return _db.Contacts.Where(predicate).ToList();
         }
 

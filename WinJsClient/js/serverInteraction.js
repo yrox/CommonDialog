@@ -100,10 +100,9 @@ function sendMessage(text, type, contactId, metaContact) {
         });
 }
 
-function getDbMessagHistory(id, name, contacts) {
+function getDbMessagHistory(id, name) {
     chatProxy.invoke("GetDbMessageHistory", {
         Name: name,
-        Contacts: contacts,
         Id: id
     })
         .done(function (messages) {
