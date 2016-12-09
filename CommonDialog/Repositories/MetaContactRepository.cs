@@ -4,6 +4,8 @@ using System.Linq;
 using BaseEntyties;
 using RefactorThis.GraphDiff;
 using System.Data.Entity;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using DataLayer.Interfaces;
 
 namespace DataLayer.Repositories
@@ -13,7 +15,7 @@ namespace DataLayer.Repositories
         public MetaContactRepository(CommonDialogContext context)
         {
             _db = context;
-            _db.Contacts.Load();
+            //_db.Contacts.Load();
         }
 
         private CommonDialogContext _db;
@@ -64,7 +66,20 @@ namespace DataLayer.Repositories
 
         public void Delete(MetaContact item)
         {
-            _db.Entry(item).State = EntityState.Deleted;
+            var contToDelete = _db.Contacts.Where(x => x.MetaContact.Id == item.Id).ToList();
+            var mesToDelete = _db.Messages.Where(x => x.MetaContact.Id == item.Id).ToList();
+            item = _db.MetaContacts.Include(x => x.Contacts).Include(x => x.Messages).First(x => x.Id == item.Id);
+            _db.Contacts.RemoveRange(contToDelete);
+            _db.Messages.RemoveRange(mesToDelete);
+            _db.MetaContacts.Remove(item);
+        }
+
+        public void DeleteRange(IEnumerable<MetaContact> contacts)
+        {
+            foreach (var item in contacts)
+            {
+                Delete(item);
+            }
         }
     }
 }

@@ -72,7 +72,7 @@
     <Content Include="images\StoreLogo.png" />
     <Content Include="images\Wide310x150Logo.scale-200.png" />
     <Content Include="js\accounts.js" />
-    <Content Include="js\dataLoader.js" />
+    <Content Include="js\dataAdapter.js" />
     <Content Include="js\dataStorage.js" />
     <Content Include="js\dialogList.js" />
     <Content Include="js\main.js" />

@@ -13,7 +13,7 @@ namespace DataLayer.Repositories
         public AccountRepository(CommonDialogContext context)
         {
             _db = context;
-            _db.Accounts.Load();
+            //_db.Accounts.Load();
         }
 
         private CommonDialogContext _db;
@@ -39,8 +39,7 @@ namespace DataLayer.Repositories
         {
             if (!Contains(item))
             {
-                _db.Accounts.Attach(item);
-                _db.Entry(item).State = EntityState.Added;
+                _db.Accounts.Add(item);
             }
             else
             {

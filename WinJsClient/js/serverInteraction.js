@@ -36,16 +36,17 @@ chatProxy.on("RecognizeCaptcha", function (url, sid) {
 });
 
 connection.logging = true;
-connection.start().done(doSmth);
+connection.start().done(loadDataFromServer);
 
-function doSmth() {
+function loadDataFromServer() {
     getDbMetaContacts();
+    getDbAccounts();
 }
 
 function authorize(code) {
     chatProxy.invoke("Authorize", code)
         .done(function () {
-            loadData();
+            return "sucseed";
         }).fail(function (error) {
             return "failed";
         });
@@ -59,13 +60,13 @@ function sendCaptcha(captcha, sid) {
         });
 }
 
-function saveAccount(login, password, type, phone, id) {
+function saveAccount(acc) {
     chatProxy.invoke("SaveAccount", {
-            Login: login,
-            Password: password,
-            Type: type,
-            PhoneNumber: phone,
-            AccountIdentifier: id
+            Login: acc.login,
+            Password: acc.password,
+            Type: acc.type,
+            PhoneNumber: acc.phone,
+            AccountIdentifier: acc.id
         })
         .done(function() {
             return "sucseed";
@@ -73,12 +74,18 @@ function saveAccount(login, password, type, phone, id) {
             return "failed";
         });
 }
-function saveMetaContact(name, contacts, id) {
-    chatProxy.invoke("SaveMetaContact", {
-        Name: name,
-        Contacts: contacts,
-        Id: id
-    })
+function saveAccounts(accs) {
+    chatProxy.invoke("SaveAccounts", accs)
+        .done(function() {
+            return "sucseed";
+        }).fail(function (error) {
+            return "failed";
+            });
+            }
+
+function saveMetaContact(meta) {
+    chatProxy.invoke("SaveMetaContact",
+        { Name: meta.name, Id: meta.id, Contscts: meta.contacts})
         .done(function () {
             return "sucseed";
         }).fail(function (error) {
@@ -100,10 +107,8 @@ function sendMessage(text, type, contactId, metaContact) {
         });
 }
 
-function getDbMessagHistory(id, name) {
-    chatProxy.invoke("GetDbMessageHistory", {
-        Name: name,
-        Id: id
+function getDbMessagHistory(meta) {
+    chatProxy.invoke("GetDbMessageHistory", {Name: meta.name, Id: meta.id
     })
         .done(function (messages) {
             return messages;
@@ -124,8 +129,17 @@ function getDbContactsOf(meta) {
 function getDbMetaContacts() {
     chatProxy.invoke("GetDbMetaContacts")
         .done(function (contacts) {
-            tempMeta = contacts[1];
-            getDbContactsOf({Name: tempMeta.Name, Id: tempMeta.Id});
+            metaAdapter(contacts);
+            return contacts;
+        }).fail(function (error) {
+            return error.message;
+        });
+}
+function getDbAccounts() {
+    chatProxy.invoke("GetDbAccounts")
+        .done(function (accounts) {
+            pushAccs(accounts);
+            return accounts;
         }).fail(function (error) {
             return error.message;
         });
@@ -162,6 +176,9 @@ function loadContactMessageHistory(id, name, phone, type) {
 function loadContactsOfType(type) {
     chatProxy.invoke("LoadContactsOfType", type)
         .done(function (contacts) {
+            if (type == "Vk") {
+                pushVkContacts(contacts);
+            }
             return contacts;
         }).fail(function (error) {
             return "failed";

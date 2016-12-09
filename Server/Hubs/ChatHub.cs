@@ -56,9 +56,24 @@ namespace Server.Hubs
             _serverApi.SaveAccount(acc);
         }
 
+        public void SaveAccounts(IEnumerable<Account> accs)
+        {
+            _serverApi.SaveAccounts(accs);
+        }
+
         public void SaveMetaContact(MetaContact metaContact)
         {
             _serverApi.SavemetaContact(metaContact);
+        }
+
+        public void DeleteMetaContact(MetaContact metaContact)
+        {
+            _serverApi.DeleteMetaContact(metaContact);
+        }
+
+        public void DeleteMetaContacts(IEnumerable<MetaContact> metaContacts)
+        {
+            _serverApi.DeleteMetaContacts(metaContacts);
         }
 
         public IEnumerable<Message> GetDbMessageHistory(MetaContact metaContact)
@@ -75,6 +90,11 @@ namespace Server.Hubs
         {
             return _serverApi.GetDbMetaContacts().ToList();
 
+        }
+
+        public IEnumerable<Account> GetDbAccounts()
+        {
+            return _serverApi.GetDbAccounts();
         }
 
         public IEnumerable<Message> LoadMetaMessageHistory(MetaContact metaContact)

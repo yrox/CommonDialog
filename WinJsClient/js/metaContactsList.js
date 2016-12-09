@@ -22,7 +22,7 @@ function remove() {
         list.selection.getItems().done(function (items) {
             source.beginEdits();
             items.forEach(function (item) {
-                source.remove(item.key)
+                source.remove(item.key);
             });
             source.endEdits();
         });
@@ -45,13 +45,19 @@ function showAddFlyout() {
 }
 
 function confirmAddMeta() {
-    var vkSelected = document.getElementById("vkListFlyout").options.selectedItem;
-    //var e = document.getElementById("ddlViewBy");
-    //var strUser = e.options[e.selectedIndex].text;
+    var name = document.getElementById("nameFlyout").value;
+    var vkList = document.getElementById("vkListFlyout");
+    var vkSelected = vkList.options[vkList.selectedIndex];
     
-    var vk = new Contact()
-    var newMeta = new MetaContact();
+    var newMeta = new MetaContact(name);
+    saveMetaContact(newMeta);
     document.getElementById("addMetaFlyout").winControl.hide();
+}
+
+function double(e) {
+    var target = e.target;
+    var listFlyout = document.getElementById("listItemFlyout");
+    listFlyout.winControl.show(target);
 }
 
 
@@ -64,6 +70,7 @@ WinJS.Namespace.define("Data", {
 
 WinJS.UI.processAll().then(function () {
     var element = document.body;
+    element.querySelector("#metaListView").addEventListener("dblclick", double, false);
     element.querySelector("#removeMeta").addEventListener("click", remove, false);
     element.querySelector("#selectMeta").addEventListener("click", selectionMode, false);
     element.querySelector("#addMeta").addEventListener("click", showAddFlyout, false);

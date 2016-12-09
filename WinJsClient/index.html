@@ -20,7 +20,7 @@
     <script src="js/models.js"></script>
     <script src="js/dataStorage.js"></script>   
     <script src="js/serverInteraction.js"></script>
-    <script src="js/dataLoader.js"></script>
+    <script src="js/dataAdapter.js"></script>
     <script src="js/main.js"></script>
     <script src="js/signIn.js"></script>
      
@@ -50,7 +50,7 @@
                         <!--Scenario Controls-->
                         <!--add metaCont flout-->
                         <div id="addMetaFlyout" data-win-control="WinJS.UI.Flyout" aria-label="{Confirm purchase flyout}">
-                            <div id="nameFlyout">Name: <input type="text" class="win-textarea"/>
+                            <div>Name: <input id="nameFlyout" type="text" class="win-textarea"/>
                             </div>
                             <div>Vk:
                                 <select id="vkListFlyout" class="win-dropdown" data-win-control="WinJS.UI.Repeater" data-win-options="{data: Data.items}">
@@ -62,20 +62,32 @@
                                     <option data-win-bind="value: id; textContent: title"></option>
                                 </select>
                             </div>
-                            <button class="win-button" id="confirmAddingMetaButton" data-win-selectable="true">ok</button>
+                            <button class="win-button" id="confirmAddingMetaButton" data-win-selectable="true">save</button>
                         </div>
 
                         <!-- Accs flyout-->
                         <div id="accsFlyout" data-win-control="WinJS.UI.Flyout" aria-label="{Confirm purchase flyout}">
-                            <div>Name: <input type="text" class="win-textarea"/>
+                            <div>
+                                Vk:
+                                <br/>
+                                <input id="vkLogin" type="text" class="win-textarea" />
+                                <br/>
+                                <input id="vkPassword" type="password" class="win-textarea" />
                             </div>
                             <div>
-                                Type:
-                                <select class="win-dropdown" data-win-control="WinJS.UI.Repeater" data-win-options="{data: AccTypes.items}">
-                                    <option data-win-bind="value: id; textContent: title"></option>
-                                </select>
+                                Telegram:
+                                <br/>
+                                <input id="telegramLogin" type="text" class="win-textarea" />
+                                <br/>
+                                <input id="telegramPassword" type="password" class="win-textarea" />
                             </div>
-                            <button class="win-button" id="confirmEditingAccButton" data-win-selectable="true">ok</button>
+
+                            <button class="win-button" id="confirmEditingAccButton" data-win-selectable="true">save</button>
+                        </div>
+                        
+                        <div id="listItemFlyout" data-win-control="WinJS.UI.Flyout" aria-label="{Confirm purchase flyout}">
+                  
+                            <button class="win-button" data-win-selectable="true">save</button>
                         </div>
 
                     </div>

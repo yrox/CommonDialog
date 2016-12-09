@@ -13,7 +13,7 @@ namespace DataLayer.Repositories
         public ContactRepository(CommonDialogContext context)
         {
             _db = context;
-            _db.Contacts.Load();
+            //_db.Contacts.Load();
         }
 
         private CommonDialogContext _db;
@@ -42,8 +42,7 @@ namespace DataLayer.Repositories
         {
             if (!Contains(item))
             {
-                _db.Contacts.Attach(item);
-                _db.Entry(item).State = EntityState.Added;
+                _db.Contacts.Add(item);
             }
             else
             {
@@ -66,7 +65,15 @@ namespace DataLayer.Repositories
 
         public void Delete(Contact item)
         {
-            _db.Entry(item).State = EntityState.Deleted;
+            _db.Contacts.Remove(item);
+        }
+
+        public void DeleteRange(IEnumerable<Contact> contacts)
+        {
+            foreach (var item in contacts)
+            {
+                Delete(item);
+            }
         }
     }
 }

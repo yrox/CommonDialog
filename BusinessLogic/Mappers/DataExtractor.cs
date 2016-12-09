@@ -7,6 +7,8 @@ namespace BusinessLogic.Mappers
     {
         public IEnumerable<Contact> Extract(IEnumerable<Contact> data)
         {
+            if (data == null)
+                return new List<Contact>();
             var result = new List<Contact>();
             foreach (var item in data)
             {
@@ -29,6 +31,8 @@ namespace BusinessLogic.Mappers
 
         public IEnumerable<Message> Extract(IEnumerable<Message> data)
         {
+            if (data == null)
+                return new List<Message>();
             var result = new List<Message>();
             foreach (var item in data)
             {

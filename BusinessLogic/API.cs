@@ -17,14 +17,15 @@ namespace BusinessLogic
             _dataHandler = DataHandler.CreateDataHandler();
             _contacts = new Contacts();
             _messaging = new Messaging();
+            _cachedContacts = new List<Contact>();
             CreateAccs();
-            
         }
 
-        private IList<IAccount> _accs;
+        private ICollection<IAccount> _accs;
         private Messaging _messaging;
         private Contacts _contacts;
         private DataHandler _dataHandler;
+        private ICollection<Contact> _cachedContacts;
 
         private void CreateAccs()
         {
@@ -34,6 +35,15 @@ namespace BusinessLogic
             {
                 //_accs.Add(kernel.Get<IAccount>(acc.Type, new ConstructorArgument("acc", acc)));
                 _accs.Add(new VkAccount(acc));
+            }
+        }
+
+        private void CasheContacts(string type)
+        {
+            var contacts = _accs.Single(a => a.AccountType == type).GetAllContacts(); 
+            foreach (var item in contacts)
+            {
+                _cachedContacts.Add(item);
             }
         }
         public void Authorize(string code)
@@ -51,6 +61,7 @@ namespace BusinessLogic
             {
                 ExceptionDispatchInfo.Capture(cEx).Throw();
             }
+            CasheContacts("Vk");
         }
         public void Authorize(string captcha, long sid)
         {
@@ -68,6 +79,18 @@ namespace BusinessLogic
         public void SaveAccount(Account acc)
         {
             _dataHandler.Save(acc);
+        }
+        public void SaveAccounts(IEnumerable<Account> accs)
+        {
+            _dataHandler.SaveRange(accs);
+        }
+        public void DeleteMetaContact(MetaContact metaContact)
+        {
+            _dataHandler.Delete(metaContact);
+        }
+        public void DeleteMetaContacts(IEnumerable<MetaContact> metaContacts)
+        {
+            _dataHandler.DeleteRange(metaContacts);
         }
         public IEnumerable<Message> GetDbMessageHistory(MetaContact metaContact)
         {
@@ -118,7 +141,7 @@ namespace BusinessLogic
 
         public IEnumerable<Contact> LoadContactsOfType(string type)
         {
-            return _accs.Single(a => a.AccountType == type).GetAllContacts();
+            return _cachedContacts.Where(x => x.Type == type);
         }
         public IEnumerable<Contact> LoadAllContacts()
         {

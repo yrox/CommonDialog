@@ -13,7 +13,7 @@ namespace DataLayer.Repositories
         public MessageRepository(CommonDialogContext context)
         {
             _db = context;
-            _db.Messages.Load();
+            //_db.Messages.Load();
         }
 
         private CommonDialogContext _db;
@@ -43,8 +43,9 @@ namespace DataLayer.Repositories
         {
             if(!Contains(item))
             {
-                _db.Messages.Attach(item);
-                _db.Entry(item).State = EntityState.Added;
+                _db.Messages.Add(item);
+                //_db.Messages.Attach(item);
+                //_db.Entry(item).State = EntityState.Added;
             }
             else
             {
@@ -68,8 +69,15 @@ namespace DataLayer.Repositories
 
         public void Delete(Message item)
         {
-            _db.Entry(item).State = EntityState.Deleted;
+            _db.Messages.Remove(item);
         }
 
+        public void DeleteRange(IEnumerable<Message> messages)
+        {
+            foreach (var item in messages)
+            {
+                Delete(item);
+            }
+        }
     }
 }
