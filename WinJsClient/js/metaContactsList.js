@@ -1,4 +1,4 @@
-﻿var currentMetaCon;
+﻿var currentMetaCon = new MetaContact();
 var metaConItems = [];
 
 
@@ -38,6 +38,16 @@ function selectionMode() {
 
 }
 
+function getSelectedItem() {
+    var list = document.getElementById("metaListView").winControl;
+    if (list.selection.count() > 0) {
+        list.selection.getItems()
+            .done(function(items) {
+                currentMetaCon = metaConItems[items[0].index];
+            });
+    }
+}
+
 function showAddFlyout() {
 
     var addButton = document.getElementById("addMeta");
@@ -54,26 +64,29 @@ function confirmAddMeta() {
     document.getElementById("addMetaFlyout").winControl.hide();
 }
 
-function double(e) {
+function editItem(e) {
     var target = e.target;
-    var listFlyout = document.getElementById("listItemFlyout");
+    var listFlyout = document.getElementById("addMetaFlyout");
+    document.getElementById("nameFlyout").value = currentMetaCon.title;
     listFlyout.winControl.show(target);
 }
 
 
-WinJS.Namespace.define("Pane.MetaListView", {
+    WinJS.Namespace.define("Pane.MetaListView", {
     data: new WinJS.Binding.List(metaConItems)
-});
-WinJS.Namespace.define("Data", {
+    });
+    WinJS.Namespace.define("Data", {
     items: new WinJS.Binding.List(metaConItems)
-});
-
-WinJS.UI.processAll().then(function () {
-    var element = document.body;
-    element.querySelector("#metaListView").addEventListener("dblclick", double, false);
-    element.querySelector("#removeMeta").addEventListener("click", remove, false);
-    element.querySelector("#selectMeta").addEventListener("click", selectionMode, false);
-    element.querySelector("#addMeta").addEventListener("click", showAddFlyout, false);
-    element.querySelector("#confirmAddingMetaButton").addEventListener("click", confirmAddMeta, false);
+    });
+    WinJS.UI.processAll().then(function () {
+        var element = document.body;
+        var list = element.querySelector("#metaListView").winControl;
+        list.onselectionchanged = getSelectedItem;
+        element.querySelector("#metaListView").addEventListener("dblclick", editItem, false);
+        element.querySelector("#removeMeta").addEventListener("click", remove, false);
+        element.querySelector("#selectMeta").addEventListener("click", selectionMode, false);
+        element.querySelector("#addMeta").addEventListener("click", showAddFlyout, false);
+        element.querySelector("#confirmAddingMetaButton").addEventListener("click", confirmAddMeta, false);
+    
 });
 

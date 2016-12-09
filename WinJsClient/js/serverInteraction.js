@@ -82,10 +82,26 @@ function saveAccounts(accs) {
             return "failed";
             });
             }
-
 function saveMetaContact(meta) {
     chatProxy.invoke("SaveMetaContact",
-        { Name: meta.name, Id: meta.id, Contscts: meta.contacts})
+        { Name: meta.name, Id: meta.id, Contacts: meta.contacts})
+        .done(function () {
+            return "sucseed";
+        }).fail(function (error) {
+            return "failed";
+        });
+}
+function delMetaContact(meta) {
+    chatProxy.invoke("DeleteMetaContact",
+        { Name: meta.name, Id: meta.id, Contacts: meta.contacts, Messages: meta.messages })
+        .done(function () {
+            return "sucseed";
+        }).fail(function (error) {
+            return "failed";
+        });
+}
+function delMetaContacts(metas) {
+    chatProxy.invoke("DeleteMetaContacts", metas)
         .done(function () {
             return "sucseed";
         }).fail(function (error) {
