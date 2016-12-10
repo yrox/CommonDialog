@@ -46,8 +46,12 @@ function loadDataFromServer() {
 function authorize(code) {
     chatProxy.invoke("Authorize", code)
         .done(function () {
+            authorised = true;
+            loadVkContacts();
+            notify("Suseed");
             return "sucseed";
         }).fail(function (error) {
+            notify("Failed");
             return "failed";
         });
 }
@@ -68,17 +72,21 @@ function saveAccount(acc) {
             PhoneNumber: acc.phone,
             AccountIdentifier: acc.id
         })
-        .done(function() {
+        .done(function () {
+            notify("Suseed");
             return "sucseed";
-        }).fail(function(error) {
+        }).fail(function (error) {
+            notify("Failed");
             return "failed";
         });
 }
 function saveAccounts(accs) {
     chatProxy.invoke("SaveAccounts", accs)
-        .done(function() {
+        .done(function () {
+            notify("Suseed");
             return "sucseed";
         }).fail(function (error) {
+            notify("Failed");
             return "failed";
             });
             }
@@ -86,8 +94,10 @@ function saveMetaContact(meta) {
     chatProxy.invoke("SaveMetaContact",
         { Name: meta.name, Id: meta.id, Contacts: meta.contacts})
         .done(function () {
+            notify("Suseed");
             return "sucseed";
         }).fail(function (error) {
+            notify("Failed");
             return "failed";
         });
 }
@@ -95,16 +105,20 @@ function delMetaContact(meta) {
     chatProxy.invoke("DeleteMetaContact",
         { Name: meta.name, Id: meta.id, Contacts: meta.contacts, Messages: meta.messages })
         .done(function () {
+            notify("Suseed");
             return "sucseed";
         }).fail(function (error) {
+            notify("Failed");
             return "failed";
         });
 }
 function delMetaContacts(metas) {
     chatProxy.invoke("DeleteMetaContacts", metas)
         .done(function () {
+            notify("Suseed");
             return "sucseed";
         }).fail(function (error) {
+            notify("Failed");
             return "failed";
         });
 }
@@ -225,6 +239,13 @@ function getContact(type, nameOrPhone) {
         });
 }
 
+function loadVkContacts() {
+    setTimeout(function () {
+        loadContactsOfType("Vk")
+    },
+        100000
+   );
+}
 
 //var chatHub = $.connection.ChatHub;
 //chatHub.client.SaveAccount({Type: ""})

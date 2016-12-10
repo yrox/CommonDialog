@@ -1,31 +1,20 @@
 ﻿var currentMetaCon = new MetaContact();
-var metaConItems = [];
 
-
-metaConItems = [
-        { title: "Marvelous Mint", text: "Gelato", picture: "/images/fruits/60Mint.png" },
-        { title: "Succulent Strawberry", text: "Sorbet", picture: "/images/fruits/60Strawberry.png" },
-        { title: "Banana Blast", text: "Low-fat frozen yogurt", picture: "/images/fruits/60Banana.png" },
-        { title: "Lavish Lemon Ice", text: "Sorbet", picture: "/images/fruits/60Lemon.png" },
-        { title: "Creamy Orange", text: "Sorbet", picture: "/images/fruits/60Orange.png" },
-        { title: "Very Vanilla", text: "Ice Cream", picture: "/images/fruits/60Vanilla.png" },
-        { title: "Banana Blast", text: "Low-fat frozen yogurt", picture: "/images/fruits/60Banana.png" },
-        { title: "Lavish Lemon Ice", text: "Sorbet", picture: "/images/fruits/60Lemon.png" }
-];
-
-
-function remove() {
+function removeMeta() {
     // Get the control
     var list = document.getElementById("metaListView").winControl;
+    var itemsToDelete = [];
     var source = list.itemDataSource;
     if (list.selection.count() > 0) {
         list.selection.getItems().done(function (items) {
             source.beginEdits();
             items.forEach(function (item) {
+                itemsToDelete.push(metaContactsData[item.index]);
                 source.remove(item.key);
             });
             source.endEdits();
         });
+        delMetaContacts(itemsToDelete);
     }
 }
 
@@ -43,8 +32,18 @@ function getSelectedItem() {
     if (list.selection.count() > 0) {
         list.selection.getItems()
             .done(function(items) {
-                currentMetaCon = metaConItems[items[0].index];
+                currentMetaCon = metaContactsData[items[0].index];
             });
+    }
+    var dTitle = document.getElementById("dialogHeader");
+    dTitle.textContent = currentMetaCon.name;
+    if (currentMetaCon.messages != undefined) {
+        if (currentMetaCon.messages.count > 0) {
+            var dialog = document.getElementById("dialogListView").winControl;
+            var dList = new WinJS.Binding.List(currentMetaCon.messages);
+            dialog.itemDataSource = dList.dataSource;
+            dialog.forceLayout();
+        }
     }
 }
 
@@ -54,12 +53,16 @@ function showAddFlyout() {
     document.getElementById("addMetaFlyout").winControl.show(addButton);
 }
 
-function confirmAddMeta() {
+function addMeta() {
     var name = document.getElementById("nameFlyout").value;
+    var list = document.getElementById("metaListView").winControl;
     var vkList = document.getElementById("vkListFlyout");
     var vkSelected = vkList.options[vkList.selectedIndex];
-    
     var newMeta = new MetaContact(name);
+    var source = list.itemDataSource;
+    source.beginEdits();
+    source.insertAtEnd(null, newMeta);
+    source.endEdits();
     saveMetaContact(newMeta);
     document.getElementById("addMetaFlyout").winControl.hide();
 }
@@ -67,26 +70,43 @@ function confirmAddMeta() {
 function editItem(e) {
     var target = e.target;
     var listFlyout = document.getElementById("addMetaFlyout");
-    document.getElementById("nameFlyout").value = currentMetaCon.title;
+    document.getElementById("nameFlyout").value = currentMetaCon.name;
     listFlyout.winControl.show(target);
 }
 
+function notify(text) {
+    var flyout = document.getElementById("notiftFlyout").winControl;
+    var flyoutText = document.getElementById("notifyText");
+    flyoutText.textContent = text;
+    flyout.placement = "top";
+    flyout.show(document.getElementById("app"));
+}
 
-    WinJS.Namespace.define("Pane.MetaListView", {
-    data: new WinJS.Binding.List(metaConItems)
-    });
-    WinJS.Namespace.define("Data", {
-    items: new WinJS.Binding.List(metaConItems)
-    });
-    WinJS.UI.processAll().then(function () {
+WinJS.Namespace.define("Data", {
+    items: new WinJS.Binding.List(metaContactsData)
+});
+
+WinJS.UI.processAll().then(function () {
         var element = document.body;
         var list = element.querySelector("#metaListView").winControl;
         list.onselectionchanged = getSelectedItem;
         element.querySelector("#metaListView").addEventListener("dblclick", editItem, false);
-        element.querySelector("#removeMeta").addEventListener("click", remove, false);
+        element.querySelector("#removeMeta").addEventListener("click", removeMeta, false);
         element.querySelector("#selectMeta").addEventListener("click", selectionMode, false);
         element.querySelector("#addMeta").addEventListener("click", showAddFlyout, false);
-        element.querySelector("#confirmAddingMetaButton").addEventListener("click", confirmAddMeta, false);
+        element.querySelector("#confirmAddingMetaButton").addEventListener("click", addMeta, false);
+        element.querySelector("#confirmButton").addEventListener("click", function() {
+            document.getElementById("notiftFlyout").winControl.hide();
+        }, false);
     
-});
+    });
+
+setTimeout(function() {
+    //Data.items = new WinJS.Binding.List(metaContactsData);
+    var mListView = document.getElementById("metaListView").winControl;
+        var list = new WinJS.Binding.List(metaContactsData);
+        mListView.itemDataSource = list.dataSource;
+    mListView.forceLayout();
+    },
+    5000);
 

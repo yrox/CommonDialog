@@ -48,6 +48,12 @@
                         <button class="win-button" id="showAccs">accounts</button>
 
                         <!--Scenario Controls-->
+                        <!--Notify flyout-->
+                        <div id="notiftFlyout" data-win-control="WinJS.UI.Flyout" aria-label="{Confirm purchase flyout}">
+                            <h2 id="notifyText" class="win-h2"></h2>
+                            <button class="win-button" id="confirmButton" data-win-selectable="true">ok</button>
+                        </div>
+
                         <!--add metaCont flout-->
                         <div id="addMetaFlyout" data-win-control="WinJS.UI.Flyout" aria-label="{Confirm purchase flyout}">
                             <div>Name: <input id="nameFlyout" type="text" class="win-textarea"/>
@@ -92,7 +98,7 @@
                 <div class="metaTemplate" data-win-control="WinJS.Binding.Template" style="display: none">
                     <div class="metaItem">
                         <div class="metaItem-Detail">
-                            <h4 class="win-h4" data-win-bind="textContent: title"></h4>
+                            <h4 class="win-h4" data-win-bind="textContent: name"></h4>
                         </div>
                     </div>
                 </div>
@@ -103,11 +109,11 @@
                      class="win-selectionstylefilled"
                      data-win-control="WinJS.UI.ListView"
                      data-win-options="{
-            itemDataSource: Content.DialogListView.data.dataSource,
             itemTemplate: select('.metaTemplate'),
             selectionMode: 'single',
             tapBehavior: WinJS.UI.TapBehavior.toggleSelect,
             itemsReorderable: true,
+            itemDataSource: Data.items.dataSource,
             layout: { type: WinJS.UI.ListLayout }
     }">
                 </div>
@@ -115,9 +121,11 @@
 
 
             <!-- Content area -->
+            <div>
+                <button id="askCodeButton" class="win-button">sign in</button>
+            </div>
             <div class="contenttext">
-                <h2 class="win-h2">SplitView Content area <button id="askCodeButton" class="win-button">sign in</button></h2>
-                
+                <h2 id="dialogHeader" class="win-h2">Dialog title</h2>
             </div>
 
             <!-- Code flyout-->
@@ -143,10 +151,10 @@
                  class="win-selectionstylefilled"
                  data-win-control="WinJS.UI.ListView"
                  data-win-options="{
-            itemDataSource: Content.DialogListView.data.dataSource,
             itemTemplate: select('.dialogTemplate'),
             selectionMode: 'none',
             tapBehavior: 'none',
+            itemDataSource: Data.items.dataSource,
             layout: { type: WinJS.UI.ListLayout }
     }">
             </div>

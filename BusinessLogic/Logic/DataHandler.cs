@@ -148,6 +148,7 @@ namespace BusinessLogic.Logic
             using (var uw = new UnitOfWork())
             {
                 uw.MetaContacts.Delete(metaContact);
+                uw.Save();
             }
         }
         public void DeleteRange(IEnumerable<MetaContact> metaContacts)
@@ -155,6 +156,7 @@ namespace BusinessLogic.Logic
             using (var uw = new UnitOfWork())
             {
                 uw.MetaContacts.DeleteRange(metaContacts);
+                uw.Save();
             }
         }
 

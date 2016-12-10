@@ -1,6 +1,9 @@
-﻿function askCode() {
+﻿
+function askCode() {
     var showButton = document.getElementById("askCodeButton");
-    document.getElementById("codeFlyout").winControl.show(showButton);
+    var flyout = document.getElementById("codeFlyout").winControl;
+    flyout.placement = "right";
+    flyout.show(showButton);
 }
 
 function signIn() {
