@@ -16,9 +16,9 @@ namespace Server
             var api = new API();
             var c = new HubConfiguration();
             c.EnableDetailedErrors = true;
-            GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(60);
-            GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(20);
-            GlobalHost.Configuration.TransportConnectTimeout = TimeSpan.FromSeconds(10);
+            GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(240);
+            GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(80);
+            GlobalHost.Configuration.TransportConnectTimeout = TimeSpan.FromSeconds(70);
             GlobalHost.DependencyResolver.Register(
             typeof(ChatHub),
             () => new ChatHub(api));

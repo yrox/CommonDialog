@@ -57,7 +57,9 @@ function addMeta() {
     var name = document.getElementById("nameFlyout").value;
     var list = document.getElementById("metaListView").winControl;
     var vkList = document.getElementById("vkListFlyout");
+    var tgList = document.getElementById("tgListFlyout");
     var vkSelected = vkList.options[vkList.selectedIndex];
+    var tgSelected = tgList.options[vkList.selectedIndex];
     var newMeta = new MetaContact(name);
     var source = list.itemDataSource;
     source.beginEdits();
@@ -113,8 +115,11 @@ setTimeout(function() {
     6000);
 
 function bindContactLists() {
-    var mListView = document.getElementById("vkListFlyout").winControl;
-    var list = new WinJS.Binding.List(vkContacts);
-    mListView.data = new WinJS.Binding.List(vkContacts);
+    var vkListView = document.getElementById("vkListFlyout").winControl;
+    var vklist = new WinJS.Binding.List(vkContacts);
+    vkListView.data = new WinJS.Binding.List(vkContacts);
+    var tgListView = document.getElementById("tgListFlyout").winControl;
+    var tglist = new WinJS.Binding.List(tgContacts);
+    tgListView.data = new WinJS.Binding.List(tgContacts);
 }
 

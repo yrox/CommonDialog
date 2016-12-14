@@ -43,7 +43,7 @@ function pushMessages(messages, meta) {
     
 }
 
-function pushVkContacts(contacts) {
+function pushAccsContacts(contacts) {
     if (contacts != undefined) {
         $.each(contacts,
         function () {
@@ -54,7 +54,12 @@ function pushVkContacts(contacts) {
                 this.ContactIdentifier,
                 this.Type,
                 null);
-            vkContacts.push(contact);
+            if (this.Type == "Vk") {
+                vkContacts.push(contact);
+            }
+            if (this.Type == "Telegram") {
+                tgContacts.push(contact);
+            }
         });
     }
 }

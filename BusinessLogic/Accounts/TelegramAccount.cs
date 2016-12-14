@@ -19,9 +19,12 @@ namespace BusinessLogic.Accounts
         {
             _account = acc;
             AccountType = acc.Type;
+            _api = new TelegramClient(_appId, _appHash);
+            _connected = _api.ConnectAsync().Result;
         }
 
         private Account _account;
+        private bool _connected = false;
 
         private string _authHash;
 
@@ -42,7 +45,7 @@ namespace BusinessLogic.Accounts
         {
             if (!_api.IsUserAuthorized())
             {
-                _authHash = _api.SendCodeRequestAsync("+375298857813").Result;
+                _authHash = _api.SendCodeRequestAsync(_account.PhoneNumber).Result;
                 //throw exception
 
             }

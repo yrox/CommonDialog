@@ -97,6 +97,11 @@ namespace Server.Hubs
             return _serverApi.GetDbAccounts();
         }
 
+        public IEnumerable<Message> GetNewMessages()
+        {
+            return _serverApi.GetNewMessages();
+        }
+
         public IEnumerable<Message> LoadMetaMessageHistory(MetaContact metaContact)
         {
             return _serverApi.LoadMessageHistoryOfMetaContact(metaContact);

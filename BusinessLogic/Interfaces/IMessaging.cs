@@ -8,5 +8,6 @@ namespace BusinessLogic.Interfaces
         void SendMessage(Message message);
         void SendMessage(Message message, string captcha, long sid);
         IEnumerable<Message> GetMessagesByContact(Contact contact);
+        IEnumerable<Message> GetNewMessages();
     }
 }

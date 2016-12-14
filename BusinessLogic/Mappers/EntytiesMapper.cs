@@ -22,6 +22,7 @@ namespace BusinessLogic.Mappers
             var message = Mapper.Map<TeleSharp.TL.TLMessage, Message>(tlMes);
             message.Type = "Telegram";
             message.DateTime = ConvertFromUnixTimestamp(tlMes.date);
+            message.MetaContact = new MetaContact();
             message.MetaContact.Id = metaContactId;
             return message;
         }

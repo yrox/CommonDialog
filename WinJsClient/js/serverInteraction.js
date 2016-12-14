@@ -47,7 +47,8 @@ function authorize(code) {
     chatProxy.invoke("Authorize", code)
         .done(function () {
             authorisedVk = true;
-            loadVkContacts();
+            authorisedTg = true;
+            loadAllContacts();
             notify("Suseed");
             return "sucseed";
         }).fail(function (error) {
@@ -206,10 +207,8 @@ function loadContactMessageHistory(id, name, phone, type) {
 function loadContactsOfType(type) {
     chatProxy.invoke("LoadContactsOfType", type)
         .done(function (contacts) {
-            if (type == "Vk") {
-                pushVkContacts(contacts);
-                bindContactLists();
-            }
+            pushAccsContacts(contacts);
+            bindContactLists();
             return contacts;
         }).fail(function (error) {
             return "failed";
@@ -218,6 +217,8 @@ function loadContactsOfType(type) {
 function loadAllContacts() {
     chatProxy.invoke("LoadAllContacts")
         .done(function (contacts) {
+            pushAccsContacts(contacts);
+            bindContactLists();
             return contacts;
         }).fail(function (error) {
             return "failed";

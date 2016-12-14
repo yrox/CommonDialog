@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using BaseEntyties;
@@ -6,6 +7,7 @@ using BusinessLogic.Accounts;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Logic;
 using Ninject;
+using Ninject.Parameters;
 using VkNet.Exception;
 
 namespace BusinessLogic
@@ -18,10 +20,12 @@ namespace BusinessLogic
             _contacts = new Contacts();
             _messaging = new Messaging();
             _cachedContacts = new List<Contact>();
+            _accsData = GetDbAccounts();
             CreateAccs();
         }
 
         private ICollection<IAccount> _accs;
+        private IEnumerable<Account> _accsData;
         private Messaging _messaging;
         private Contacts _contacts;
         private DataHandler _dataHandler;
@@ -31,10 +35,13 @@ namespace BusinessLogic
         {
             _accs = new List<IAccount>();
             var kernel = new StandardKernel();
-            foreach (var acc in _dataHandler.GetDbAccounts())
+            foreach (var acc in _accsData)
             {
                 //_accs.Add(kernel.Get<IAccount>(acc.Type, new ConstructorArgument("acc", acc)));
-                _accs.Add(new VkAccount(acc));
+                if (acc.Type == "Vk")
+                    _accs.Add(new VkAccount(acc));
+                if (acc.Type == "Telegram")
+                    _accs.Add(new TelegramAccount(acc));
             }
         }
 
@@ -52,8 +59,7 @@ namespace BusinessLogic
             {
                 foreach (var acc in _accs)
                 {
-                    if (acc.AccountType == "Vk")
-                        acc.Authorize(code);
+                    acc.Authorize(code);
                 }
             }
 
@@ -62,6 +68,7 @@ namespace BusinessLogic
                 ExceptionDispatchInfo.Capture(cEx).Throw();
             }
             CasheContacts("Vk");
+            CasheContacts("Telegram");
         }
         public void Authorize(string captcha, long sid)
         {
@@ -69,6 +76,8 @@ namespace BusinessLogic
             {
                 acc.Authorize(captcha, sid);
             }
+            CasheContacts("Vk");
+            CasheContacts("Telegram");
         }
 
 
@@ -111,12 +120,14 @@ namespace BusinessLogic
 
         public void SendMesage(Message message)
         {
+            message.DateTime = new DateTime();
             _dataHandler.Save(message);
             var accToSend = _accs.Single(a => a.AccountType == message.Type);
             _messaging.SendMessage(message, accToSend);
-        }//initalize datetime
+        }
         public void SendMesage(Message message, string captcha, long sid)
         {
+            message.DateTime = new DateTime();
             _dataHandler.Save(message);
             var accToSend = _accs.Single(a => a.AccountType == message.Type);
             _messaging.SendMessage(message, accToSend, captcha, sid);
@@ -137,6 +148,31 @@ namespace BusinessLogic
             }
             _dataHandler.SaveRange(messages);
             return messages.OrderBy(m => m.DateTime); 
+        }
+
+        public IEnumerable<Message> GetNewMessages()
+        {
+            //var metaConIds = GetDbMetaContacts().Select(item => item.Id).ToList();
+            var cont = _dataHandler.GetDbContacts().ToList();
+            var allMessages = new List<Message>();
+            foreach (var acc in _accs)
+            {
+                allMessages.AddRange(acc.GetNewMessages());
+            }
+            SaveAccounts(_accsData);
+            var result = new List<Message>();
+            foreach (var mes in allMessages)
+            {
+                if (cont.Any(x => x.ContactIdentifier == mes.ContactIdentifier && x.Type == mes.Type))
+                {
+                    mes.MetaContact =
+                        cont.Find(x => x.ContactIdentifier == mes.ContactIdentifier && x.Type == mes.Type).MetaContact;
+                    result.Add(mes);
+
+                }
+            }
+
+            return allMessages.Where(m => cont.Any(x => x.ContactIdentifier == m.ContactIdentifier && x.Type == m.Type));
         }
 
         public IEnumerable<Contact> LoadContactsOfType(string type)

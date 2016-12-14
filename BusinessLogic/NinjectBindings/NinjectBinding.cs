@@ -9,6 +9,7 @@ namespace BusinessLogic.NinjectBindings
         public override void Load()
         {
             Bind<IAccount>().To<VkAccount>().Named("Vk");
+            Bind<IAccount>().To<TelegramAccount>().Named("Telegram");
         }
     }
 }

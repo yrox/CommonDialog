@@ -33,23 +33,23 @@ namespace BusinessLogic.Accounts
 
         public string AccountType { get; }
 
-        //private static string code;
-        //private Func<string> _code = () =>
-        //{
-        //    return code;
-        //};
-
-        Func<string> code = () =>
+        private static string code;
+        private Func<string> _code = () =>
         {
-            Console.Write("Please enter code: ");
-            string value = Console.ReadLine();
-
-            return value;
+            return code;
         };
+
+        //Func<string> code = () =>
+        //{
+        //    Console.Write("Please enter code: ");
+        //    string value = Console.ReadLine();
+
+        //    return value;
+        //};
 
         public void Authorize(string codeValue)
         {
-            //code = codeValue;
+            code = codeValue;
             try
             {
 
@@ -59,7 +59,7 @@ namespace BusinessLogic.Accounts
                     Login = _account.Login,
                     Password = _account.Password,
                     Settings = Settings.All,
-                    TwoFactorAuthorization = code
+                    TwoFactorAuthorization = _code
                 });
             }
             catch (CaptchaNeededException cEx)

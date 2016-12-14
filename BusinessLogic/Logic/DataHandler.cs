@@ -66,6 +66,11 @@ namespace BusinessLogic.Logic
             return metas;
         }
 
+        public IEnumerable<Contact> GetDbContacts()
+        {
+            return _extractor.Extract(_data.Contacts.GetAll());
+        }
+
         public IEnumerable<Account> GetDbAccounts()
         {
             return _data.Accounts.GetAll();
