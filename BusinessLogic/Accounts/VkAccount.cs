@@ -22,36 +22,50 @@ namespace BusinessLogic.Accounts
         }
 
         private Account _account;
+
+        private VkNet.Model.LongPollServerResponse _longPoll;
+        private VkNet.Model.LongPollHistoryResponse _longPollHistory;
+        private ulong? _pts;
        
         private const int _appId = 5678626;
         private VkApi _api;
 
         public string AccountType { get; }
 
-        private static string code;
-        private Func<string> _code = () =>
+        //private static string code;
+        //private Func<string> _code = () =>
+        //{
+        //    return code;
+        //};
+
+        Func<string> code = () =>
         {
-            return code;
+            Console.Write("Please enter code: ");
+            string value = Console.ReadLine();
+
+            return value;
         };
 
         public void Authorize(string codeValue)
         {
-            code = codeValue;
+            //code = codeValue;
             try
             {
+
                 _api.Authorize(new ApiAuthParams
                 {
                     ApplicationId = _appId,
                     Login = _account.Login,
                     Password = _account.Password,
                     Settings = Settings.All,
-                    TwoFactorAuthorization = _code
+                    TwoFactorAuthorization = code
                 });
             }
             catch (CaptchaNeededException cEx)
             {
                 ExceptionDispatchInfo.Capture(cEx).Throw();
             }
+            
         }
 
         public void Authorize(string captcha, long sid)
@@ -119,7 +133,24 @@ namespace BusinessLogic.Accounts
                     StartMessageId = -1
                 });
             return EntytiesMapper.Map(s.Messages, contact.MetaContact.Id);
-        } 
+        }
+
+        public void GetNewMessages()
+        {
+            _longPoll = _api.Messages.GetLongPollServer(useSsl:false, needPts:true);
+            if (_pts == null)
+                _pts = Convert.ToUInt64(Console.ReadLine());
+    
+            _longPollHistory = _api.Messages.GetLongPollHistory(new MessagesGetLongPollHistoryParams
+            {
+                Ts = _longPoll.Ts,
+                Onlines = false,
+                Pts = _pts
+            });
+            _pts = _longPollHistory.NewPts;
+            var c = _longPollHistory.Messages;
+            var u = _longPollHistory.UnreadMessages;
+        }
 
     }
 }

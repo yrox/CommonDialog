@@ -46,7 +46,7 @@ function loadDataFromServer() {
 function authorize(code) {
     chatProxy.invoke("Authorize", code)
         .done(function () {
-            authorised = true;
+            authorisedVk = true;
             loadVkContacts();
             notify("Suseed");
             return "sucseed";
@@ -208,6 +208,7 @@ function loadContactsOfType(type) {
         .done(function (contacts) {
             if (type == "Vk") {
                 pushVkContacts(contacts);
+                bindContactLists();
             }
             return contacts;
         }).fail(function (error) {
@@ -240,11 +241,12 @@ function getContact(type, nameOrPhone) {
 }
 
 function loadVkContacts() {
-    setTimeout(function () {
-        loadContactsOfType("Vk")
-    },
-        100000
-   );
+    loadContactsOfType("Vk");
+    // setTimeout(function () {
+    //     loadContactsOfType("Vk")
+    // },
+    //     120000
+    //);
 }
 
 //var chatHub = $.connection.ChatHub;

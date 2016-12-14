@@ -82,8 +82,10 @@ function notify(text) {
     flyout.show(document.getElementById("app"));
 }
 
-WinJS.Namespace.define("Data", {
-    items: new WinJS.Binding.List(metaContactsData)
+WinJS.Namespace.define("Data",
+{
+    meta: new WinJS.Binding.List(metaContactsData),
+    vk: new WinJS.Binding.List(vkContacts)
 });
 
 WinJS.UI.processAll().then(function () {
@@ -104,9 +106,15 @@ WinJS.UI.processAll().then(function () {
 setTimeout(function() {
     //Data.items = new WinJS.Binding.List(metaContactsData);
     var mListView = document.getElementById("metaListView").winControl;
-        var list = new WinJS.Binding.List(metaContactsData);
-        mListView.itemDataSource = list.dataSource;
+    var list = new WinJS.Binding.List(metaContactsData);
+    mListView.itemDataSource = list.dataSource;
     mListView.forceLayout();
     },
-    5000);
+    6000);
+
+function bindContactLists() {
+    var mListView = document.getElementById("vkListFlyout").winControl;
+    var list = new WinJS.Binding.List(vkContacts);
+    mListView.data = new WinJS.Binding.List(vkContacts);
+}
 

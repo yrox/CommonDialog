@@ -3,7 +3,8 @@ var accountsData = [];
 var vkContacts = [];
 var tgContacts = [];
 
-var authorised = new Boolean(false);
+var authorisedVk = new Boolean(false);
+var authorisedTg = new Boolean(false);
 
 function arrayObjectIndexOf(myArray, searchTerm, property) {
     for (var i = 0, len = myArray.length; i < len; i++) {

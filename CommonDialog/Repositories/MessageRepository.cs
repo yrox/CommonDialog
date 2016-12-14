@@ -74,10 +74,7 @@ namespace DataLayer.Repositories
 
         public void DeleteRange(IEnumerable<Message> messages)
         {
-            foreach (var item in messages)
-            {
-                Delete(item);
-            }
+            _db.Messages.RemoveRange(messages);
         }
     }
 }

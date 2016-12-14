@@ -59,13 +59,13 @@
                             <div>Name: <input id="nameFlyout" type="text" class="win-textarea"/>
                             </div>
                             <div>Vk:
-                                <select id="vkListFlyout" class="win-dropdown" data-win-control="WinJS.UI.Repeater" data-win-options="{data: Data.items}">
-                                    <option data-win-bind="value: id; textContent: title"></option>
+                                <select id="vkListFlyout" class="win-dropdown" data-win-control="WinJS.UI.Repeater" data-win-options="{data: Data.vk}">
+                                    <option data-win-bind="value: id; textContent: name"></option>
                                 </select>
                             </div>
                             <div>Telegram:
                                 <select id="tgListFlyout" class="win-dropdown" data-win-control="WinJS.UI.Repeater" data-win-options="{data: Data.items}">
-                                    <option data-win-bind="value: id; textContent: title"></option>
+                                    <option data-win-bind="value: id; textContent: name"></option>
                                 </select>
                             </div>
                             <button class="win-button" id="confirmAddingMetaButton" data-win-selectable="true">save</button>
@@ -113,7 +113,7 @@
             selectionMode: 'single',
             tapBehavior: WinJS.UI.TapBehavior.toggleSelect,
             itemsReorderable: true,
-            itemDataSource: Data.items.dataSource,
+            itemDataSource: Data.meta.dataSource,
             layout: { type: WinJS.UI.ListLayout }
     }">
                 </div>
@@ -139,8 +139,8 @@
             <div class="dialogTemplate" data-win-control="WinJS.Binding.Template" style="display: none">
                 <div class="dialogItem">
                     <div class="dialogItem-Detail">
-                        <h4 class="win-h4" data-win-bind="textContent: title"></h4>
-                        <h6 class="win-h6" data-win-bind="textContent: text"></h6>
+                        <h4 class="win-h4" data-win-bind="textContent: text"></h4>
+                        <h6 class="win-h6" data-win-bind="textContent: dateTime"></h6>
                     </div>
                 </div>
             </div>
@@ -154,7 +154,7 @@
             itemTemplate: select('.dialogTemplate'),
             selectionMode: 'none',
             tapBehavior: 'none',
-            itemDataSource: Data.items.dataSource,
+            itemDataSource: Data.meta.dataSource,
             layout: { type: WinJS.UI.ListLayout }
     }">
             </div>

@@ -70,10 +70,7 @@ namespace DataLayer.Repositories
 
         public void DeleteRange(IEnumerable<Contact> contacts)
         {
-            foreach (var item in contacts)
-            {
-                Delete(item);
-            }
+            _db.Contacts.RemoveRange(contacts);
         }
     }
 }
