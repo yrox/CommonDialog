@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using BaseEntyties;
+using BusinessLogic.Interfaces;
 using BusinessLogic.Mappers;
 using TeleSharp.TL;
 using TeleSharp.TL.Messages;
@@ -12,7 +13,7 @@ using VkNet.Model.RequestParams;
 
 namespace BusinessLogic.Accounts
 {
-    public class TelegramAccount
+    public class TelegramAccount : IAccount
     {
         public TelegramAccount(Account acc)
         {
@@ -84,16 +85,16 @@ namespace BusinessLogic.Accounts
         }
         public IEnumerable<Message> GetMessagesByContact(Contact contact)
         {
-            var cont = GetTlContact(contact.Id);
             var dialogs = (TLDialogs)_api.GetUserDialogsAsync().Result;
             var messages = EntytiesMapper.Map(dialogs.messages.lists, 0).ToList();
             return messages.Where(x => x.ContactIdentifier == contact.ContactIdentifier);
 
         }
 
-        public void GetNewMessages()
+        public IEnumerable<Message> GetNewMessages()
         {
-            
+            var dialogs = (TLDialogs)_api.GetUserDialogsAsync().Result;
+            return EntytiesMapper.Map(dialogs.messages.lists, 0).ToList();
         }
 
     }

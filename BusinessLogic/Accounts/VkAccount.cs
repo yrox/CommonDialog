@@ -19,6 +19,7 @@ namespace BusinessLogic.Accounts
             _api = new VkApi();
             _account = acc;
             AccountType = acc.Type;
+            _pts = Convert.ToUInt64(acc.PhoneNumber);
         }
 
         private Account _account;
@@ -135,11 +136,9 @@ namespace BusinessLogic.Accounts
             return EntytiesMapper.Map(s.Messages, contact.MetaContact.Id);
         }
 
-        public void GetNewMessages()
+        public IEnumerable<Message> GetNewMessages()
         {
             _longPoll = _api.Messages.GetLongPollServer(useSsl:false, needPts:true);
-            if (_pts == null)
-                _pts = Convert.ToUInt64(Console.ReadLine());
     
             _longPollHistory = _api.Messages.GetLongPollHistory(new MessagesGetLongPollHistoryParams
             {
@@ -148,8 +147,8 @@ namespace BusinessLogic.Accounts
                 Pts = _pts
             });
             _pts = _longPollHistory.NewPts;
-            var c = _longPollHistory.Messages;
-            var u = _longPollHistory.UnreadMessages;
+            _account.PhoneNumber = _pts.ToString();
+            return EntytiesMapper.Map(_longPollHistory.Messages, 0).ToList();
         }
 
     }
