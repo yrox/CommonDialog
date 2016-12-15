@@ -142,6 +142,7 @@ function getDbMessagHistory(meta) {
     chatProxy.invoke("GetDbMessageHistory", {Name: meta.name, Id: meta.id
     })
         .done(function (messages) {
+            sortMessages(messages);
             return messages;
         }).fail(function (error) {
             return "failed";
@@ -219,7 +220,6 @@ function loadContactsOfType(type) {
         .done(function (contacts) {
             pushAccsContacts(contacts);
             bindContactLists();
-            getNewMessages();
             return contacts;
         }).fail(function (error) {
             return "failed";

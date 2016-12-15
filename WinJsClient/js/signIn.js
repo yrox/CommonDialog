@@ -13,6 +13,7 @@ function signIn() {
     authorize(code);
 }
 
+
 WinJS.UI.processAll().then(function () {
     var element = document.body;
     element.querySelector("#sendCodeButton").addEventListener("click", signIn, false);

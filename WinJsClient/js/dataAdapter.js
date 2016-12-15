@@ -91,17 +91,33 @@ function sortMessages(messages) {
                     this.Type,
                     this.ContactIdentifier,
                     this.MetaContact);
-                var index;
-                if (this.Type == "Vk") {
-                    var i = arrayObjectIndexOf(vkContacts, this.ContactIdentifier, "contactIdentifier");
-                    index = vkContacts[i].MetaContact.Id;
-                }
+                var meta;
+                //if (this.Type == "Vk") {
+                //    var i = arrayObjectIndexOf(vkContacts, this.ContactIdentifier, "contactIdentifier");
+                //    $.each(metaContactsData,
+                //        function () {
+                //            if (arrayObjectIndexOf(this
+                //                    .contacts,
+                //                    vkContacts[i].contactIdentifier,
+                //                    "contactIdentifier") >
+                //                -1)
+                //                meta = arrayObjectIndexOf(metaContactsData, this.id, "");
+                //        });
+                //}
 
-                if (this.Type == "Telegram") {
-                    var i = arrayObjectIndexOf(tgContacts, this.ContactIdentifier, "contactIdentifier");
-                    index = tgContacts[i].MetaContact.Id;
-                }
-                metaContactsData[index].messages.push(message);
+                //if (this.Type == "Telegram") {
+                //    var i = arrayObjectIndexOf(tgContacts, this.ContactIdentifier, "contactIdentifier");
+                //    $.each(metaContactsData,
+                //        function() {
+                //            if (arrayObjectIndexOf(this
+                //                    .contacts,
+                //                    tgContacts[i].contactIdentifier,
+                //                    "contactIdentifier") >
+                //                -1)
+                //                meta = arrayObjectIndexOf(metaContactsData, this.id, "");
+                //        });
+                //}
+                metaContactsData[this.MetaContact.Id].messages.push(message);
             });
     }
 }

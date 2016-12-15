@@ -38,8 +38,8 @@ namespace BusinessLogic
             foreach (var acc in _accsData)
             {
                 //_accs.Add(kernel.Get<IAccount>(acc.Type, new ConstructorArgument("acc", acc)));
-                if (acc.Type == "Vk")
-                    _accs.Add(new VkAccount(acc));
+                //if (acc.Type == "Vk")
+                    //_accs.Add(new VkAccount(acc));
                 if (acc.Type == "Telegram")
                     _accs.Add(new TelegramAccount(acc));
             }
@@ -67,7 +67,7 @@ namespace BusinessLogic
             {
                 ExceptionDispatchInfo.Capture(cEx).Throw();
             }
-            CasheContacts("Vk");
+            //CasheContacts("Vk");
             CasheContacts("Telegram");
         }
         public void Authorize(string captcha, long sid)

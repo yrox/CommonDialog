@@ -41,10 +41,11 @@ function getSelectedItem() {
     var dTitle = document.getElementById("dialogHeader");
     dTitle.textContent = currentMetaCon.name;
     if (currentMetaCon.messages != undefined) {
-        if (currentMetaCon.messages.count > 0) {
+        if (currentMetaCon.messages.length > 0) {
             var dialog = document.getElementById("dialogListView").winControl;
             var dList = new WinJS.Binding.List(currentMetaCon.messages);
             dialog.itemDataSource = dList.dataSource;
+            //dialog.data = new WinJS.Binding.List(currentMetaCon.messages);
             dialog.forceLayout();
         }
     }
@@ -121,6 +122,7 @@ WinJS.UI.processAll().then(function () {
         element.querySelector("#selectMeta").addEventListener("click", selectionMode, false);
         element.querySelector("#addMeta").addEventListener("click", showAddFlyout, false);
         element.querySelector("#confirmAddingMetaButton").addEventListener("click", addMeta, false);
+        
         element.querySelector("#confirmButton").addEventListener("click", function() {
             document.getElementById("notiftFlyout").winControl.hide();
         }, false);
