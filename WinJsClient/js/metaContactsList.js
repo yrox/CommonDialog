@@ -35,24 +35,37 @@ function getSelectedItem() {
         list.selection.getItems()
             .done(function(items) {
                 currentMetaCon = metaContactsData[items[0].index];
-
             });
     }
     var dTitle = document.getElementById("dialogHeader");
     dTitle.textContent = currentMetaCon.name;
     if (currentMetaCon.messages != undefined) {
-        if (currentMetaCon.messages.length > 0) {
+        //if (currentMetaCon.messages.length > 0) {
             var dialog = document.getElementById("dialogListView").winControl;
             var dList = new WinJS.Binding.List(currentMetaCon.messages);
             dialog.itemDataSource = dList.dataSource;
             //dialog.data = new WinJS.Binding.List(currentMetaCon.messages);
             dialog.forceLayout();
-        }
+        //}
     }
     if (currentMetaCon.contacts != undefined){
-        if (currentMetaCon.contacts.count > 0) {
-            currentVkCon = arrayObjectIndexOf(currentMetaCon.contacts, "Vk", "type");
-            currentTgCon = arrayObjectIndexOf(currentMetaCon.contacts, "Telegram", "type")
+        if (currentMetaCon.contacts.length > 0) {
+            var vkI = arrayObjectIndexOf(currentMetaCon.contacts, "Vk", "type");
+            if (vkI > -1) {
+                var vi = arrayObjectIndexOf(vkContacts,
+                    currentMetaCon.contacts[vkI].contactIdentifier,
+                    "contactIdentifier");
+                currentVkCon = vkContacts[vi];
+            } else {
+                currentVkCon = undefined;
+            }
+            var tgI = arrayObjectIndexOf(currentMetaCon.contacts, "Telegram", "type");
+            if (tgI > -1) {
+                var ti = arrayObjectIndexOf(tgContacts, currentMetaCon.contacts[tgI].contactIdentifier, "contactIdentifier");
+                currentTgCon = tgContacts[ti];
+            } else {
+                currentTgCon = undefined;
+            }
         }
     }
 }
@@ -87,13 +100,19 @@ function editItem(e) {
     document.getElementById("nameFlyout").value = currentMetaCon.name;
     //var vkSelected = arrayObjectIndexOf(vkContacts, currentVkCon.contactIdentifier, "contactIdentifier");
     //var tgSelected = arrayObjectIndexOf(tgContacts, currentTgCon.contactIdentifier, "contactIdentifier");
-    if (currentMetaCon.contacts != null && currentMetaCon.contacts.count > 0) {
-        document
-            .getElementById("vkListFlyout")
-            .selectedIndex = arrayObjectIndexOf(vkContacts, currentVkCon.name, "name");
-        document
-            .getElementById("tgListFlyout")
-            .selectedIndex = arrayObjectIndexOf(tgContacts, currentTgCon.name, "name");
+    if (currentMetaCon.contacts != undefined && currentMetaCon.contacts.length > 0) {
+        if (vkContacts != undefined && vkContacts.length > 0) {
+            var vkI = arrayObjectIndexOf(vkContacts, currentVkCon.name, "name");
+            document
+                .getElementById("vkListFlyout")
+                .selectedIndex = vkI;
+        }
+        if (tgContacts != undefined && tgContacts.length > 0) {
+            var tgI = arrayObjectIndexOf(tgContacts, currentTgCon.contactIdentifier, "contactIdentifier");
+            document
+                .getElementById("tgListFlyout")
+                .selectedIndex = tgI;
+        }
     }
 
     listFlyout.winControl.show(target);
@@ -122,10 +141,10 @@ WinJS.UI.processAll().then(function () {
         element.querySelector("#selectMeta").addEventListener("click", selectionMode, false);
         element.querySelector("#addMeta").addEventListener("click", showAddFlyout, false);
         element.querySelector("#confirmAddingMetaButton").addEventListener("click", addMeta, false);
-        
         element.querySelector("#confirmButton").addEventListener("click", function() {
             document.getElementById("notiftFlyout").winControl.hide();
         }, false);
+
     
     });
 

@@ -121,9 +121,11 @@ namespace BusinessLogic
         public void SendMesage(Message message)
         {
             message.DateTime = DateTime.Now;
-            _dataHandler.Save(message);
+            var meta = _dataHandler.GetDbmetaContacts().ToList().Find(x => x.Id == message.MetaContact.Id);
+            meta.Messages.Add(message);
             var accToSend = _accs.Single(a => a.AccountType == message.Type);
             _messaging.SendMessage(message, accToSend);
+            _dataHandler.Save(meta);
         }
         public void SendMesage(Message message, string captcha, long sid)
         {

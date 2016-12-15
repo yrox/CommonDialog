@@ -47,3 +47,9 @@
     margin-top: 6px;
 }
 
+#messageToSend {
+    width: 100%;
+}
+#sendButtton {
+    right: 5px;
+}

@@ -49,7 +49,7 @@ function authorize(code) {
             authorisedVk = true;
             authorisedTg = true;
             loadAllContacts();
-            notify("Suseed");
+            notify("Sucseed");
             return "sucseed";
         }).fail(function (error) {
             notify("Failed");
@@ -124,16 +124,14 @@ function delMetaContacts(metas) {
         });
 }
 
-function sendMessage(text, type, contactId, metaContact) {
-    chatProxy.invoke("SendMessage", {
-        Text: text,
-        Type: type,
-        ContactIdentifier: contactId,
-        MetaContact: metaContact
-    })
+
+function someName(message) {
+    chatProxy.invoke("SendMessage", message)
         .done(function () {
+            pushMessage(message);
             return "sucseed";
         }).fail(function (error) {
+            notify("Failed")
             return "failed";
         });
 }
@@ -210,7 +208,7 @@ function getNewMessages() {
             sortMessages(messages);
             return messages;
         }).fail(function (error) {
-            getNewMessages();
+            //getNewMessages();
             return error.message;
         });
 }
@@ -230,7 +228,7 @@ function loadAllContacts() {
         .done(function (contacts) {
             pushAccsContacts(contacts);
             bindContactLists();
-            getNewMessages();
+            //getNewMessages();
             return contacts;
         }).fail(function (error) {
             return "failed";
@@ -251,6 +249,10 @@ function getContact(type, nameOrPhone) {
         }).fail(function (error) {
             return "failed";
         });
+}
+
+function doSmth(message) {
+    someName(message);
 }
 
 //function loadVkContacts() {

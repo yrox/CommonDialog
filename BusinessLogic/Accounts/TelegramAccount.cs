@@ -70,12 +70,12 @@ namespace BusinessLogic.Accounts
 
         public void SendMessage(Message message)
         {
+            var cont = GetTlContact(message.ContactIdentifier);
+            var accessHash = cont.access_hash.Value;
+            var id = message.ContactIdentifier;
+            var peer = new TLInputPeerUser {access_hash = accessHash, user_id = id};
             _api.SendMessageAsync(
-                new TLInputPeerUser
-                {
-                    access_hash = GetTlContact(message.ContactIdentifier).access_hash.Value,
-                    user_id = message.ContactIdentifier
-                }, message.Text);
+                peer, message.Text);
         }
         public void SendMessage(Message message, string captcha, long sid)
         {

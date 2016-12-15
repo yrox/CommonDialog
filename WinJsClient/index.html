@@ -25,6 +25,7 @@
     <script src="js/signIn.js"></script>
      
     <script src="js/metaContactsList.js"></script>
+    <script src="js/splitView.js"></script>
     <script src="js/dialogList.js"></script>
     <script src="js/accounts.js"></script>
     
@@ -84,8 +85,6 @@
                                 Telegram:
                                 <br/>
                                 <input id="telegramLogin" type="text" class="win-textarea" />
-                                <br/>
-                                <input id="telegramPassword" type="password" class="win-textarea" />
                             </div>
 
                             <button class="win-button" id="confirmEditingAccButton" data-win-selectable="true">save</button>
@@ -157,6 +156,10 @@
             
             layout: { type: WinJS.UI.ListLayout }
     }">
+            </div>
+            <div id="messageInput">
+                <textarea id="messageToSend" class="win-textarea"></textarea>
+                <button id="sendButtton" class="win-button">send</button>
             </div>
         </div>
     </div>

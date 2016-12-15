@@ -42,6 +42,15 @@ function pushMessages(messages, meta) {
     }
 }
 
+function pushMessage(message) {
+    var index = arrayObjectIndexOf(metaContactsData, message.metaContact.id, "id");
+    metaContactsData[index].messages.push(message);
+    var dialog = document.getElementById("dialogListView").winControl;
+    var dList = new WinJS.Binding.List(currentMetaCon.messages);
+    dialog.itemDataSource = dList.dataSource;
+    dialog.forceLayout();
+}
+
 function pushAccsContacts(contacts) {
     if (contacts != undefined) {
         $.each(contacts,
