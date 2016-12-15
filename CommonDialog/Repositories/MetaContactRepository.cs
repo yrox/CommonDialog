@@ -4,8 +4,6 @@ using System.Linq;
 using BaseEntyties;
 using RefactorThis.GraphDiff;
 using System.Data.Entity;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using DataLayer.Interfaces;
 
 namespace DataLayer.Repositories

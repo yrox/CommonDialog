@@ -203,12 +203,23 @@ function loadContactMessageHistory(id, name, phone, type) {
         });
 
 }
+function getNewMessages() {
+    chatProxy.invoke("GetNewMessages")
+        .done(function (messages) {
+            sortMessages(messages);
+            return messages;
+        }).fail(function (error) {
+            getNewMessages();
+            return error.message;
+        });
+}
 
 function loadContactsOfType(type) {
     chatProxy.invoke("LoadContactsOfType", type)
         .done(function (contacts) {
             pushAccsContacts(contacts);
             bindContactLists();
+            getNewMessages();
             return contacts;
         }).fail(function (error) {
             return "failed";
@@ -219,6 +230,7 @@ function loadAllContacts() {
         .done(function (contacts) {
             pushAccsContacts(contacts);
             bindContactLists();
+            getNewMessages();
             return contacts;
         }).fail(function (error) {
             return "failed";
@@ -241,14 +253,14 @@ function getContact(type, nameOrPhone) {
         });
 }
 
-function loadVkContacts() {
-    loadContactsOfType("Vk");
+//function loadVkContacts() {
+  //  loadContactsOfType("Vk");
     // setTimeout(function () {
     //     loadContactsOfType("Vk")
     // },
     //     120000
     //);
-}
+//}
 
 //var chatHub = $.connection.ChatHub;
 //chatHub.client.SaveAccount({Type: ""})

@@ -40,7 +40,6 @@ function pushMessages(messages, meta) {
                 meta.messages.push(message);
             });
     }
-    
 }
 
 function pushAccsContacts(contacts) {
@@ -78,5 +77,31 @@ function pushAccs(accs) {
                null);
            accountsData.push(acc);
        });
+    }
+}
+
+function sortMessages(messages) {
+    if (messages != undefined) {
+        $.each(messages,
+            function() {
+                var message = new Message(
+                    this.Id,
+                    this.Text,
+                    this.Date,
+                    this.Type,
+                    this.ContactIdentifier,
+                    this.MetaContact);
+                var index;
+                if (this.Type == "Vk") {
+                    var i = arrayObjectIndexOf(vkContacts, this.ContactIdentifier, "contactIdentifier");
+                    index = vkContacts[i].MetaContact.Id;
+                }
+
+                if (this.Type == "Telegram") {
+                    var i = arrayObjectIndexOf(tgContacts, this.ContactIdentifier, "contactIdentifier");
+                    index = tgContacts[i].MetaContact.Id;
+                }
+                metaContactsData[index].messages.push(message);
+            });
     }
 }

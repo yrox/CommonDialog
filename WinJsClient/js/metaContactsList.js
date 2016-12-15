@@ -1,4 +1,6 @@
 ﻿var currentMetaCon = new MetaContact();
+var currentVkCon = new Contact();
+var currentTgCon = new Contact();
 
 function removeMeta() {
     // Get the control
@@ -33,6 +35,7 @@ function getSelectedItem() {
         list.selection.getItems()
             .done(function(items) {
                 currentMetaCon = metaContactsData[items[0].index];
+
             });
     }
     var dTitle = document.getElementById("dialogHeader");
@@ -43,6 +46,12 @@ function getSelectedItem() {
             var dList = new WinJS.Binding.List(currentMetaCon.messages);
             dialog.itemDataSource = dList.dataSource;
             dialog.forceLayout();
+        }
+    }
+    if (currentMetaCon.contacts != undefined){
+        if (currentMetaCon.contacts.count > 0) {
+            currentVkCon = arrayObjectIndexOf(currentMetaCon.contacts, "Vk", "type");
+            currentTgCon = arrayObjectIndexOf(currentMetaCon.contacts, "Telegram", "type")
         }
     }
 }
@@ -58,9 +67,11 @@ function addMeta() {
     var list = document.getElementById("metaListView").winControl;
     var vkList = document.getElementById("vkListFlyout");
     var tgList = document.getElementById("tgListFlyout");
-    var vkSelected = vkList.options[vkList.selectedIndex];
-    var tgSelected = tgList.options[vkList.selectedIndex];
+    var vkSelected = vkContacts[vkList.selectedIndex];
+    var tgSelected = tgContacts[tgList.selectedIndex];
     var newMeta = new MetaContact(name);
+    newMeta.contacts.push(vkSelected);
+    newMeta.contacts.push(tgSelected);
     var source = list.itemDataSource;
     source.beginEdits();
     source.insertAtEnd(null, newMeta);
@@ -73,6 +84,17 @@ function editItem(e) {
     var target = e.target;
     var listFlyout = document.getElementById("addMetaFlyout");
     document.getElementById("nameFlyout").value = currentMetaCon.name;
+    //var vkSelected = arrayObjectIndexOf(vkContacts, currentVkCon.contactIdentifier, "contactIdentifier");
+    //var tgSelected = arrayObjectIndexOf(tgContacts, currentTgCon.contactIdentifier, "contactIdentifier");
+    if (currentMetaCon.contacts != null && currentMetaCon.contacts.count > 0) {
+        document
+            .getElementById("vkListFlyout")
+            .selectedIndex = arrayObjectIndexOf(vkContacts, currentVkCon.name, "name");
+        document
+            .getElementById("tgListFlyout")
+            .selectedIndex = arrayObjectIndexOf(tgContacts, currentTgCon.name, "name");
+    }
+
     listFlyout.winControl.show(target);
 }
 

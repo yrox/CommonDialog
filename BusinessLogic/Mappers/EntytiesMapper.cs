@@ -54,6 +54,7 @@ namespace BusinessLogic.Mappers
                 .ForMember("ContactIdentifier", x => x.MapFrom(c => c.UserId)));
             var message = Mapper.Map<VkNet.Model.Message, Message>(vkMes);
             message.Type = "Vk";
+            message.MetaContact = new MetaContact();
             message.MetaContact.Id = metaContactId;
             return message;
         }

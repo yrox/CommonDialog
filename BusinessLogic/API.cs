@@ -120,14 +120,14 @@ namespace BusinessLogic
 
         public void SendMesage(Message message)
         {
-            message.DateTime = new DateTime();
+            message.DateTime = DateTime.Now;
             _dataHandler.Save(message);
             var accToSend = _accs.Single(a => a.AccountType == message.Type);
             _messaging.SendMessage(message, accToSend);
         }
         public void SendMesage(Message message, string captcha, long sid)
         {
-            message.DateTime = new DateTime();
+            message.DateTime = DateTime.Now;
             _dataHandler.Save(message);
             var accToSend = _accs.Single(a => a.AccountType == message.Type);
             _messaging.SendMessage(message, accToSend, captcha, sid);
@@ -171,8 +171,9 @@ namespace BusinessLogic
 
                 }
             }
-
-            return allMessages.Where(m => cont.Any(x => x.ContactIdentifier == m.ContactIdentifier && x.Type == m.Type));
+            _dataHandler.SaveRange(result);
+            return result;
+            //return allMessages.Where(m => cont.Any(x => x.ContactIdentifier == m.ContactIdentifier && x.Type == m.Type));
         }
 
         public IEnumerable<Contact> LoadContactsOfType(string type)

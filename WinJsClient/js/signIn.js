@@ -1,9 +1,11 @@
 ﻿
 function askCode() {
-    var showButton = document.getElementById("askCodeButton");
-    var flyout = document.getElementById("codeFlyout").winControl;
-    flyout.placement = "right";
-    flyout.show(showButton);
+    if (authorisedVk == false || authorisedTg == false) {
+        var showButton = document.getElementById("askCodeButton");
+        var flyout = document.getElementById("codeFlyout").winControl;
+        flyout.placement = "right";
+        flyout.show(showButton);
+    }
 }
 
 function signIn() {
