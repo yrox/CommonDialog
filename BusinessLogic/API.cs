@@ -88,11 +88,13 @@ namespace BusinessLogic
         public void SaveAccount(Account acc)
         {
             _dataHandler.Save(acc);
+            var contacts = _accs.Single(a => a.AccountType == acc.Type).GetAllContacts();
+            _dataHandler.SaveRange(contacts);
         }
         public void SaveAccounts(IEnumerable<Account> accs)
         {
             _dataHandler.SaveRange(accs);
-        }
+        } 
         public void DeleteMetaContact(MetaContact metaContact)
         {
             _dataHandler.Delete(metaContact);

@@ -24,7 +24,7 @@ namespace DataLayer.Repositories
                      m => m.ContactIdentifier == item.ContactIdentifier &&
                      m.Text == item.Text &&
                      m.Type == item.Type &&
-                     m.DateTime == item.DateTime);
+                     m.MetaContactId == item.MetaContactId);
         }
         public IEnumerable<Message> GetAll()
         {
