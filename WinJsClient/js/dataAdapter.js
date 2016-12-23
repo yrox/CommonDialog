@@ -100,7 +100,8 @@ function sortMessages(messages) {
                     this.Type,
                     this.ContactIdentifier,
                     this.MetaContact);
-                var meta;
+                metaContactsData[this.MetaContact.Id].messages.push(message);
+ 
                 //if (this.Type == "Vk") {
                 //    var i = arrayObjectIndexOf(vkContacts, this.ContactIdentifier, "contactIdentifier");
                 //    $.each(metaContactsData,
@@ -126,7 +127,7 @@ function sortMessages(messages) {
                 //                meta = arrayObjectIndexOf(metaContactsData, this.id, "");
                 //        });
                 //}
-                metaContactsData[this.MetaContact.Id].messages.push(message);
+                
             });
     }
 }

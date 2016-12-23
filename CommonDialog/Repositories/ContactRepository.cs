@@ -21,7 +21,7 @@ namespace DataLayer.Repositories
         public bool Contains(Contact item)
         {
             return _db.Contacts.Any(
-                     c => c.MetaContact == item.MetaContact &&
+                     c => c.MetaContactId == item.MetaContactId &&
                      c.ContactIdentifier == item.ContactIdentifier &&
                      c.Type == item.Type);
         }
@@ -60,7 +60,7 @@ namespace DataLayer.Repositories
         public void Update(Contact item)
         {
             _db.Entry(item).State = EntityState.Detached;
-            _db.UpdateGraph(item, map => map.OwnedEntity(x => x.MetaContact));
+            _db.UpdateGraph(item, map => map.OwnedEntity(x => x.MetaContactId));
         }
 
         public void Delete(Contact item)

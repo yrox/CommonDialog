@@ -22,8 +22,8 @@ namespace BusinessLogic.Mappers
             var message = Mapper.Map<TeleSharp.TL.TLMessage, Message>(tlMes);
             message.Type = "Telegram";
             message.DateTime = ConvertFromUnixTimestamp(tlMes.date);
-            message.MetaContact = new MetaContact();
-            message.MetaContact.Id = metaContactId;
+            
+            message.MetaContactId = metaContactId;
             return message;
         }
         public static IEnumerable<Message> Map(IEnumerable<TeleSharp.TL.TLAbsMessage> tlMesEnumerable, int metaContactId)
@@ -54,8 +54,7 @@ namespace BusinessLogic.Mappers
                 .ForMember("ContactIdentifier", x => x.MapFrom(c => c.UserId)));
             var message = Mapper.Map<VkNet.Model.Message, Message>(vkMes);
             message.Type = "Vk";
-            message.MetaContact = new MetaContact();
-            message.MetaContact.Id = metaContactId;
+            message.MetaContactId = metaContactId;
             return message;
         }
         public static IEnumerable<Message> Map(IEnumerable<VkNet.Model.Message> vkMesEnumerable, int metaContactId)

@@ -133,7 +133,7 @@ namespace BusinessLogic.Accounts
                     UserId = GetContact(contact.Name).ContactIdentifier,
                     StartMessageId = -1
                 });
-            return EntytiesMapper.Map(s.Messages, contact.MetaContact.Id);
+            return EntytiesMapper.Map(s.Messages, contact.MetaContactId);
         }
 
         public IEnumerable<Message> GetNewMessages()

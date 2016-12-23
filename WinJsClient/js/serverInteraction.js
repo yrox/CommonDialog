@@ -228,7 +228,8 @@ function loadAllContacts() {
         .done(function (contacts) {
             pushAccsContacts(contacts);
             bindContactLists();
-            //getNewMessages();
+            //startAskingServer();
+            getNewMessages();
             return contacts;
         }).fail(function (error) {
             return "failed";
@@ -253,6 +254,13 @@ function getContact(type, nameOrPhone) {
 
 function doSmth(message) {
     someName(message);
+}
+
+function startAskingServer() {
+    setTimeout(function run() {
+        getNewMessages();
+        setTimeout(run, 20000);
+    }, 20000);
 }
 
 //function loadVkContacts() {

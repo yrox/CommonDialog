@@ -121,7 +121,7 @@ namespace BusinessLogic
         public void SendMesage(Message message)
         {
             message.DateTime = DateTime.Now;
-            var meta = _dataHandler.GetDbmetaContacts().ToList().Find(x => x.Id == message.MetaContact.Id);
+            var meta = _dataHandler.GetDbmetaContacts().ToList().Find(x => x.Id == message.MetaContactId);
             meta.Messages.Add(message);
             var accToSend = _accs.Single(a => a.AccountType == message.Type);
             _messaging.SendMessage(message, accToSend);
@@ -167,13 +167,15 @@ namespace BusinessLogic
             {
                 if (cont.Any(x => x.ContactIdentifier == mes.ContactIdentifier && x.Type == mes.Type))
                 {
-                    mes.MetaContact =
-                        cont.Find(x => x.ContactIdentifier == mes.ContactIdentifier && x.Type == mes.Type).MetaContact;
+                    var id =cont.Find(x => x.ContactIdentifier == mes.ContactIdentifier && x.Type == mes.Type).MetaContactId;
+                    var meta = _dataHandler.GetDbmetaContacts().ToList().Find(x => x.Id == id);
+                    meta.Messages.Add(mes);
+                    _dataHandler.Save(meta);
                     result.Add(mes);
 
                 }
             }
-            _dataHandler.SaveRange(result);
+            //_dataHandler.SaveRange(result);
             return result;
             //return allMessages.Where(m => cont.Any(x => x.ContactIdentifier == m.ContactIdentifier && x.Type == m.Type));
         }

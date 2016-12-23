@@ -19,11 +19,7 @@ namespace BusinessLogic.Mappers
                     Id = item.Id,
                     Type = item.Type,
                     PhoneNumber = item.PhoneNumber,
-                    MetaContact = new MetaContact
-                    {
-                        Name = item.MetaContact.Name,
-                        Id = item.MetaContact.Id
-                    }
+                    MetaContactId = item.MetaContactId
                 });
             }
             return result;
@@ -43,11 +39,7 @@ namespace BusinessLogic.Mappers
                     Text = item.Text,
                     Type = item.Type,
                     DateTime = item.DateTime,
-                    MetaContact = new MetaContact
-                    {
-                        Id = item.MetaContact.Id,
-                        Name = item.MetaContact.Name
-                    }
+                    MetaContactId = item.MetaContactId
                 });
             }
             return result;

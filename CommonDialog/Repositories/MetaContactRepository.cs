@@ -64,8 +64,8 @@ namespace DataLayer.Repositories
 
         public void Delete(MetaContact item)
         {
-            var contToDelete = _db.Contacts.Where(x => x.MetaContact.Id == item.Id).ToList();
-            var mesToDelete = _db.Messages.Where(x => x.MetaContact.Id == item.Id).ToList();
+            var contToDelete = _db.Contacts.Where(x => x.MetaContactId == item.Id).ToList();
+            var mesToDelete = _db.Messages.Where(x => x.MetaContactId == item.Id).ToList();
             item = _db.MetaContacts.Include(x => x.Contacts).Include(x => x.Messages).First(x => x.Id == item.Id);
             _db.Contacts.RemoveRange(contToDelete);
             _db.Messages.RemoveRange(mesToDelete);

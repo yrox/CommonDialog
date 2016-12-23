@@ -24,7 +24,7 @@ namespace BusinessLogic.Logic
 
         public IEnumerable<Message> GetDbMessageHistory(MetaContact metaContact)
         {
-            return _extractor.Extract(_data.Messages.Find(x => x.MetaContact.Id == metaContact.Id));
+            return _extractor.Extract(_data.Messages.Find(x => x.MetaContactId == metaContact.Id));
         }
         public IEnumerable<Message> GetDbMessageHistoryOfType(MetaContact metaContact, string type)
         {
@@ -33,9 +33,9 @@ namespace BusinessLogic.Logic
 
         public IEnumerable<Contact> GetDbContactsOf(MetaContact metaContact)
         {
-            _extractor.Extract(_data.Contacts.Find(x => x.MetaContact.Id == metaContact.Id));
+            _extractor.Extract(_data.Contacts.Find(x => x.MetaContactId == metaContact.Id));
 
-            return _extractor.Extract(_data.Contacts.Find(x => x.MetaContact.Id == metaContact.Id));
+            return _extractor.Extract(_data.Contacts.Find(x => x.MetaContactId == metaContact.Id));
         }
         public IEnumerable<MetaContact> GetDbmetaContacts()
         {
